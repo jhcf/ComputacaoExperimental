@@ -1,0 +1,133 @@
+
+<!-- saved from url=(0103)https://web.archive.org/web/20191105212941/https://www.cs.amherst.edu/alglab/exactbinpacklab/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./ExactBinPackLab Home_files/analytics.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app39.us.archive.org';v.server_ms=324;archive_analytics.send_pageview({});});</script><script type="text/javascript" src="./ExactBinPackLab Home_files/playback.bundle.js" charset="utf-8"></script>
+<script type="text/javascript" src="./ExactBinPackLab Home_files/wombat.js" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("https://www.cs.amherst.edu/alglab/exactbinpacklab/index.html","20191105212941","https://web.archive.org/","web","/_static/",
+	      "1572989381");
+</script>
+<link rel="stylesheet" type="text/css" href="./ExactBinPackLab Home_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="./ExactBinPackLab Home_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+<link rel="stylesheet" type="text/css" href="./ExactBinPackLab Home_files/labstyle.css">
+<title>AlgLab Home</title>
+</head>
+
+<body><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display: block; direction: ltr;">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20191105212941/https://www.cs.amherst.edu/alglab/exactbinpacklab/index.html</div>
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="./ExactBinPackLab Home_files/donate.html" scrolling="no" frameborder="0" style="width:100%; height:100%">
+    </iframe>
+  </div>
+</div><script type="text/javascript">
+__wm.bt(650,27,25,2,"web","https://www.cs.amherst.edu/alglab/exactbinpacklab/index.html","20191105212941",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<div class="header">
+
+<!-- This is the banner content for every page -->
+<h1>AlgLab: An Open Laboratory for Experiments On Algorithms</h1>
+<table align="center" width="100%">
+<tbody><tr>
+<td align="center">
+<a href="https://web.archive.org/web/20191105212941/https://www.cs.amherst.edu/alglab/index.html">AlgLab Home</a> 
+</td>
+<td align="center">
+<a href="https://web.archive.org/web/20191105212941/https://www.cs.amherst.edu/alglab/about.html">About</a>
+</td>
+<td align="center">
+<a href="https://web.archive.org/web/20191105212941/https://www.cs.amherst.edu/alglab/labs.html">Labs</a>
+</td>
+<td align="center">
+<a href="https://web.archive.org/web/20191105212941/https://www.cs.amherst.edu/alglab/related.html">Related</a>
+</td> 
+<td align="center">
+<a href="https://web.archive.org/web/20191105212941/https://www.cs.amherst.edu/alglab/contribute.html">Contribute</a>
+</td> 
+</tr></tbody></table> 
+</div>
+
+<div class="box">
+<h2>ExactBinPackLab: An Exhaustive Search Algorithm for Bin Packing</h2>
+
+<h3>About the Lab</h3> 
+
+The One-Dimensional Bin Packing Problem is: given a list of 
+<b>n</b> weights in the range <b>lo</b>, <b>hi</b>, to pack the 
+weights into unit-capacity bins so as to minimize the total number
+of bins used.  Bin Packing is NP-Hard. 
+<p>
+ This lab contains generators and code 
+for an exhaustive-search algorithm
+for bin packing. The algorithm generates every permutation of the list, and 
+for each, then applies the <em>Next Fit</em> packing rule.  This guarantees
+to find the optimal packing, but it takes exponential time.
+
+</p><hr>
+<h3>Resources and Links</h3>
+
+There are 4 versions of the algorithm, written in Java.  A generator
+of random uniform lists on (0,1) is internal to the code. 
+<ul>
+<li><a href="https://web.archive.org/web/20191105212941/https://www.cs.amherst.edu/alglab/exactbinpacklab/Binpackv1.java">Binpackv1.java</a> Version 1 in the book: Simple exhaustive search. 
+</li><li><a href="https://web.archive.org/web/20191105212941/https://www.cs.amherst.edu/alglab/exactbinpacklab/Binpackv2.java">Binpackv2.java</a> Version 2: Implements branch-and-bound. 
+</li><li><a href="https://web.archive.org/web/20191105212941/https://www.cs.amherst.edu/alglab/exactbinpacklab/Binpackv3.java">Binpack3.java</a> Version 3: Branch-and-bound plus propogation. 
+</li><li><a href="https://web.archive.org/web/20191105212941/https://www.cs.amherst.edu/alglab/exactbinpacklab/Binpackv4.java">Binpack4.java</a> Version 4: Version 3 plus preprocessing with FFD. 
+</li></ul>
+
+<hr>
+<h3>Projects</h3> 
+
+<ol>
+<li>How much improvement in (number of recursive stages) does each algorithm tuneup yield? For 
+which values of <b>n</b> and/or <b>u</b> are the tuneups most effective?
+</li><li> Apply additional algorithm and code-tuning ideas suggested in the book (pruning, changing
+computation order, cutoffs at small problem sizes, collapsing hierarchies, ...).  
+How much more speed can you squeeze out of this algorithim? 
+</li><li>Getting good timing statistics for Java programs is notoriously difficult, because of the
+use of the Virtual Machine, and extra features like garbage collection.  Try different profilers
+and timing tools, and see which ones give you the best accuracy and precision.  How much variation
+among platforms is there, when you run identical processes.
+</li><li> Re-implement the algorithms in C++ and compare computation times.  
+</li></ol> 
+
+
+</div>
+
+
+
+<!--
+     FILE ARCHIVED ON 21:29:41 Nov 05, 2019 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 23:32:59 Jul 14, 2021.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  PetaboxLoader3.datanode: 234.766 (4)
+  captures_list: 221.18
+  load_resource: 97.099
+  exclusion.robots.policy: 0.324
+  exclusion.robots: 0.339
+  CDXLines.iter: 18.47 (3)
+  esindex: 0.015
+  LoadShardBlock: 190.839 (3)
+  RedisCDXSource: 8.295
+  PetaboxLoader3.resolve: 50.471
+--></body></html>

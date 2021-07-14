@@ -1,0 +1,262 @@
+
+<!-- saved from url=(0097)https://web.archive.org/web/20191105212938/https://www.cs.amherst.edu/alglab/markovlab/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./MarkovLab_files/analytics.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app28.us.archive.org';v.server_ms=194;archive_analytics.send_pageview({});});</script><script type="text/javascript" src="./MarkovLab_files/playback.bundle.js" charset="utf-8"></script>
+<script type="text/javascript" src="./MarkovLab_files/wombat.js" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("https://www.cs.amherst.edu/alglab/markovlab/index.html","20191105212938","https://web.archive.org/","web","/_static/",
+	      "1572989378");
+</script>
+<link rel="stylesheet" type="text/css" href="./MarkovLab_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="./MarkovLab_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+<link rel="stylesheet" type="text/css" href="./MarkovLab_files/labstyle.css">
+<title>AlgLab Home</title>
+</head>
+
+<body><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display: block; direction: ltr;">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20191105212938/https://www.cs.amherst.edu/alglab/markovlab/index.html</div>
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="./MarkovLab_files/donate.html" scrolling="no" frameborder="0" style="width:100%; height:100%">
+    </iframe>
+  </div>
+</div><script type="text/javascript">
+__wm.bt(650,27,25,2,"web","https://www.cs.amherst.edu/alglab/markovlab/index.html","20191105212938",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<div class="header">
+
+<!-- This is the banner content for every page -->
+<h1>AlgLab: An Open Laboratory for Experiments On Algorithms</h1>
+<table align="center" width="100%">
+<tbody><tr>
+<td align="center" width="25%">
+<a href="https://web.archive.org/web/20191105212938/https://www.cs.amherst.edu/alglab/index.html">AlgLab Home</a> 
+</td>
+<td align="center" width="25%">
+<a href="https://web.archive.org/web/20191105212938/https://www.cs.amherst.edu/alglab/about.html">About</a>
+</td>
+<td align="center" width="25%">
+<a href="https://web.archive.org/web/20191105212938/https://www.cs.amherst.edu/alglab/labs.html">Labs</a>
+</td>
+<td align="center" width="25%">
+<a href="https://web.archive.org/web/20191105212938/https://www.cs.amherst.edu/alglab/contribute.html">Contribute</a>
+</td> 
+</tr></tbody></table> 
+</div>
+
+<div class="box">
+<h2> MarkovLab: Markov Chain Monte Carlo Text Generation</h2>
+<h3>The Algorithm</h3> 
+
+(This is a synopsis of a discussion in Chapter 3: What to 
+Measure, of <em>A Guide to Experimental Algorithmics</em>, referred to here as the 
+<em>Guide</em>.) The Markov Chain Monte Carlo (MCMC) Text Generaton algorithm takes the following
+parameters as input: 
+<p>
+<table border="0">
+<tbody><tr> 
+<th>T</th><td>Sample input text, containing <b>n</b> words. </td>
+</tr>
+
+<tr>
+<th>m</th><td>Number ofoutput words to generate.</td>
+</tr>
+
+<tr>
+<th>k</th><td>Parameter controlling key size, a small integer</td> 
+</tr>
+</tbody></table>
+
+</p><p>
+The algorithm generates a ``real-looking'' 
+random text of <b>m</b> words, according to 
+word frequencies calculated from <b>T</b>.  Parameter <b>k</b> is a small
+integer specifying the <em>phrase size</em>, explained below. 
+</p><p>
+The algorithm starts by building a table of all <b>k</b>-word 
+phrases in the text. For example, suppose <b>k=2</b> and the text is 
+
+</p><pre>This is a test, this is only a test. This is a test of the emergency 
+broadcasting system. 
+</pre> 
+<p> 
+In this text the phrases <tt>this is</tt> and <tt>a test</tt>
+each appear 3 times, <tt>is a</tt> appears 2 times, and so forth. 
+</p><p>
+Once the table is built, the algorithm sets a String variable 
+<b>phrase</b> to equal
+the first <b>k</b> words in the text, and prints them.  It then generates
+the next <b>m-k</b> words as follows:
+
+</p><p>
+</p><ol>
+<li>Find all copies of <b>phrase</b> in the table. For example 
+<tt>this is</tt> has three copies in the table. 
+</li><li>Select one of the copies uniformly at random. Print the successor 
+word that comes after that copy of the phrase in the text.  For example,
+the three successor words for <tt>this is</tt> are: 
+ <tt>a</tt>, <tt>only</tt>, and <tt>a</tt>.  With probablity 2/3, <tt>a</tt>
+is printed next, and with probability 1/3, <tt>only</tt> is printed next.
+</li><li>Remove the first word from <b>phrase</b> and append the selected successor 
+word.  For example with probability 2/3 the new phrase is <tt>is a</tt>. 
+</li><li>Go to step 1, and repeat until <b>m</b> words have been printed. 
+</li></ol>
+<p> 
+<b>Modeling computation time.</b> Chapter 3 surveys several choices of 
+<em>performance indicators</em> for measuring the time performance of 
+this algorithm, including the number of word comparisons; the number of 
+character comparisons; the number of instructions executed in the program;
+profiling information from <tt>gprof</tt>; CPU times, and wall clock times.
+</p><p> 
+A <em>performance model</em> is a function that is 
+built to predict performance in terms of the parameters 
+<b>T</b>, <b>n</b>, <b>m</b>, and <b>k</b>.  The accuracy and precision 
+of the performance model depend on the choice of performance indicator. 
+
+</p><hr>
+<h3>Resources and Links</h3>
+
+<h4>In AlgLab</h4>
+<ul>
+<li><a href="https://web.archive.org/web/20191105212938/https://www.cs.amherst.edu/alglab/markovlab/markov.c">markov.c</a>. A C code version by Jon Bentley 
+(with the interface slightly modified by C. McGeoch), that implements the lookup table 
+with a sorted array.   
+</li></ul>
+
+<h4>External Resources</h4>
+<ul>
+<li>The MCMC algorithm is described in 
+Section 15.1 of <em>Programming Pearls</em>, by Jon Bentley 
+(Addison-Wesley 2000): <a href="https://web.archive.org/web/20191105212938/http://cm.bell-labs.com/cm/cs/pearls/strings.html"> here is a 
+link</a> to the companion website. The discussion covers implementation and performance
+issues for strings. 
+The site contains implementations of: <tt>markov.c</tt>, 
+the original C program; <tt>markovhash.c</tt>, a C program implementing the lookup step with 
+a hash table; <tt>markovlet.c</tt>, a C program that generates text at the character 
+level instead
+of the word level; and C++ and C tools for counting and listing phrases in text files.  
+<p>
+</p></li><li> The algorithm is also described in Chapter 3 of <em>The Practice of Programming</em>,
+by Brian W. Kernighan and Rob Pike (Addison-Wesley 1999). The chapter considers issues of
+data structure design and choice of programming language. Here is a link to
+<a href="https://web.archive.org/web/20191105212938/http://cm.bell-labs.com/cm/cs/tpop/code.html">source code from the book</a>,
+which contains implementations of MCMC in C, Java, C++, Awk, and Perl.  There are also 
+two sample text files (King James Bible and the Book of Psalms) for testing the code. 
+<p>  
+</p></li><li>The text files mentioned in the <em>Guide</em> were 
+downloaded from <a href="https://web.archive.org/web/20191105212938/http://www.gutenberg.org/">Project Gutenberg</a>, which 
+creates online versions of copyright-free texts.  Remove the Project Gutenberg preamble
+before testing your MCMC implementations. 
+<p>
+</p></li><li>``Markov Chain Monte Carlo'' is a general algorithm paradigm that has many applications 
+besides text generation.  
+The <a href="https://web.archive.org/web/20191105212938/http://en.wikipedia.org/wiki/Markov_chain">Wikipedia Page on 
+Markov Chains</a> and their applications includes a discussion of text-generation. (Accessed
+7/18/2011). 
+<p>
+</p></li><li>Here is a link to <a href="https://web.archive.org/web/20191105212938/http://www.valgrind.org/">Valgrind</a>.
+</li></ul>
+
+
+<hr>
+<h3>Projects</h3>
+Here are some suggestions for experimental projects using the MCMC algorithm. 
+
+<ol>
+<li><b>Build and evaluate new models.</b>  Here is the <a href="https://web.archive.org/web/20191105212938/https://www.cs.amherst.edu/alglab/markovlab/markov.c">
+C implementation</a> of the algorithm, written by 
+Jon Bentley, that is described in the book. 
+<ol>
+<li>Run experiments to extend the word comparison model to cases where <b>k&gt;1</b>.
+</li><li>Add another term <b>p(k,T,n,m)</b> to the word-comparison or character-comparison
+model that gives a tighter prediction of the cost of the Random Selection step.  For 
+example, it might be based on the average (or maximum?) number of 
+phrase duplicates in <b>T</b>. You will have to write a program that measures 
+this property in <b>T</b> (preferably in a <b>O(n)</b> time or less). 
+</li><li>Develop predictive models for non-English prose, poetry or 
+song lyrics, or files of source code. 
+</li><li>Use the procedure in Chapter 3 to develop models to predict 
+CPU time on your favorite operating system. How closely can you predict times for the 
+target experiment?  
+</li><li>Develop a character-comparison cost model that takes <em>input</em> 
+parameters <b>n</b>, <b>m</b> and <b>k</b> in units of characters
+instead of words. How does it compare to the word-comparison and character-comparison models? 
+</li></ol>
+Evaluate the accuracy and precison of your models: first, using the same text but different
+values of <b>n,m,k</b> within the range of your experiments; second, using values of 
+<b>n,m,k</b> outside the range of your experiments; third, using different text files <b>T</b>.
+How do these variations affect the accuracy and precision of your model?  
+How does your choice of performance indicator affect the accuracy 
+and precision of your model?   What would you do next to improve it? 
+<p>
+</p></li><li><b>Evaluate  performance indicators.</b>
+<ol>
+<li>Compare CPU times and elapsed times (clock ticks and instruction 
+cycles) on your favorite system. How much variation can you observe?  
+</li><li>Compare CPU times and elapsed times on two different systems. Can you map measurements
+on one system to predictions on another? 
+</li><li>Use tools like <tt>gprof</tt> and <tt>Cachegrind</tt> to build a link between instruction 
+counts and CPU times.  How much variation do you observe on different systems? 
+</li><li>Is the memory hierarchy a facter here? Does 
+time-per-instruction depend on the memory footprint of the program?  
+
+</li><li>Does the cost of 
+the Random Select operation depend on the fact that the caches were previously ``warmed up'' 
+by binary search? Devise experiments to measure random selection times, with and without
+binary search. Is there a difference? 
+</li></ol> 
+
+<p> 
+</p></li><li><b>Compare implementations.</b> Download an alternative implementation
+of the MCMC algorithm (see the resource list below).
+<ol>
+<li> Build new performance models for various performance indicators for 
+this implementation. Is one implementation easier to predict than another? 
+</li><li> Which performance indicators would be best for 
+comparing the sorted-array and hash-table implementations?  Which performance indicators
+would be best for tuning one of these implementations?   Which performance indicators would
+you use to compare implementations in different languages?  
+</li></ol> 
+
+</li></ol>
+
+
+</div>
+
+
+
+<!--
+     FILE ARCHIVED ON 21:29:38 Nov 05, 2019 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 23:26:10 Jul 14, 2021.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 68.392
+  exclusion.robots: 0.256
+  exclusion.robots.policy: 0.246
+  RedisCDXSource: 1.84
+  esindex: 0.01
+  LoadShardBlock: 39.171 (3)
+  PetaboxLoader3.datanode: 62.876 (4)
+  CDXLines.iter: 23.533 (3)
+  load_resource: 115.85
+  PetaboxLoader3.resolve: 80.11
+--></body></html>

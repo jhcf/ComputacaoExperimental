@@ -1,0 +1,147 @@
+
+<!-- saved from url=(0108)https://web.archive.org/web/20191105212942/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./EssentialSubgraphLab Home_files/analytics.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app102.us.archive.org';v.server_ms=172;archive_analytics.send_pageview({});});</script><script type="text/javascript" src="./EssentialSubgraphLab Home_files/playback.bundle.js" charset="utf-8"></script>
+<script type="text/javascript" src="./EssentialSubgraphLab Home_files/wombat.js" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("https://www.cs.amherst.edu/alglab/essentialsubgraphlab/index.html","20191105212942","https://web.archive.org/","web","/_static/",
+	      "1572989382");
+</script>
+<link rel="stylesheet" type="text/css" href="./EssentialSubgraphLab Home_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="./EssentialSubgraphLab Home_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+<link rel="stylesheet" type="text/css" href="./EssentialSubgraphLab Home_files/labstyle.css">
+<title>AlgLab Home</title>
+</head>
+
+<body><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display: block; direction: ltr;">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20191105212942/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/index.html</div>
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="./EssentialSubgraphLab Home_files/donate.html" scrolling="no" frameborder="0" style="width:100%; height:100%">
+    </iframe>
+  </div>
+</div><script type="text/javascript">
+__wm.bt(650,27,25,2,"web","https://www.cs.amherst.edu/alglab/essentialsubgraphlab/index.html","20191105212942",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<div class="header">
+
+<!-- This is the banner content for every page -->
+<h1>AlgLab: An Open Laboratory for Experiments On Algorithms</h1>
+<table align="center" width="100%">
+<tbody><tr>
+<td align="center">
+<a href="https://web.archive.org/web/20191105212942/https://www.cs.amherst.edu/alglab/index.html">AlgLab Home</a> 
+</td>
+<td align="center">
+<a href="https://web.archive.org/web/20191105212942/https://www.cs.amherst.edu/alglab/about.html">About</a>
+</td>
+<td align="center">
+<a href="https://web.archive.org/web/20191105212942/https://www.cs.amherst.edu/alglab/labs.html">Labs</a>
+</td>
+<td align="center">
+<a href="https://web.archive.org/web/20191105212942/https://www.cs.amherst.edu/alglab/related.html">Related</a>
+</td> 
+<td align="center">
+<a href="https://web.archive.org/web/20191105212942/https://www.cs.amherst.edu/alglab/contribute.html">Contribute</a>
+</td> 
+</tr></tbody></table> 
+</div>
+
+<div class="box">
+<h2>EssentialSubgraphLab: Essential Subgraphs of Random Graphs</h2>
+
+<h3>About the Lab</h3> 
+
+You are given a graph or digraph <b>G = (V,E,W)</b> with positive
+weights on edges.  The <em>distance</em> between vertices <b>x</b>
+and <b>y</b> is defined as cost of the least-cost path between 
+<b>x</b> and <b>y</b>, summing weights of edges used in the path. 
+<p>
+For any pair <b>x,y</b>, the edge <b>(x,y)</b> may or may or may not be
+the shortest path.  An edge of <b>G</b> is called <em>essential</em> 
+if it is uniquely the shortest path between its endpoints: that is if
+there is no alternative path of equal or smaller cost.  
+</p><p>
+The <em>Essential Subgraph Problem</em> is, given <b>G</b>, to find
+the subgraph <b>S</b> containing only the essential edges of <b>G</b>.  This
+problem has many similarities with All-Pairs Shortest-Paths.  
+</p><p> 
+The algorithm described here works by considering edges of <b>G</b>
+in increasing order by weight, and building the Essential Subraph <b>S</b>
+on the fly.  If <b>(x,y)</b> is essential (based on a search in <b>S</b>),
+then it adds the edge to <b>S</b> and otherwise discards it.  The 
+runtime is <em>O(ns log n)</em>, where <b>s</b> is the number of edges in 
+<b>S</b> at the end of the computation.  In the standard averagae case 
+model <em>s = O(n log n)</em>. 
+
+</p><hr>
+<h3>Resources and Links</h3>
+
+The algorithm and these versions are described in Chapter 4: Tuning Algorithms, Tuning Code. 
+
+<ul>
+<li><a href="https://web.archive.org/web/20191105212942/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/subgraph0.c">subgraph0.c</a> Version 0 in the book.  Simple implementation of the algorithm.
+</li><li><a href="https://web.archive.org/web/20191105212942/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/subgraph1.c">subgraph1.c</a> Version 1. Memoization with a distance matrix
+</li><li><a href="https://web.archive.org/web/20191105212942/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/subgraph2.c">subgraph2.c</a> Version 2. memoization+ no loop abort + yes filter the heap
+(selected after 8-way test of all combinations)
+</li><li><a href="https://web.archive.org/web/20191105212942/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/subgraph3.c">subgraph3.c</a> Version 3: V2  plus bfs with loop abort (outer loop). 
+</li><li><a href="https://web.archive.org/web/20191105212942/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/timetest0.in">timetest0.in</a>  Sample shell script for time tests.
+</li><li><a href="https://web.archive.org/web/20191105212942/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/n100.in">n100.in</a> Sample input command file. 
+<p> 
+</p></li><li>See: C. McGeoch, All Pairs Shortest Paths and the Essential
+Subgraph to learn more about this algorithm and properties. 
+</li></ul>
+
+<hr>
+<h3>Projects</h3> 
+
+<ol>
+<li>Try more of the algorithm and code tuning ideas suggested in Chapter 4.  How fast can you make
+it run?
+</li><li>The tuning process would be very different if different input graph models were used.  Try engineering this
+algorithm for road-map graphs. 
+</li><li>Try tuning the heap data structure for a different application: for example to support Dijkstra's
+Single-Source Shortest Path algorithm. 
+</li><li>This algorithm is easily adapted to solve the all-pairs shortest paths problem. How would you adapt
+these tune-ups to solve that problem on real-world instances? 
+
+</li></ol> 
+</div>
+
+
+
+<!--
+     FILE ARCHIVED ON 21:29:42 Nov 05, 2019 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 23:34:29 Jul 14, 2021.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  LoadShardBlock: 53.594 (3)
+  captures_list: 80.91
+  RedisCDXSource: 1.005
+  esindex: 0.008
+  CDXLines.iter: 22.735 (3)
+  PetaboxLoader3.resolve: 45.334
+  exclusion.robots: 0.195
+  PetaboxLoader3.datanode: 68.17 (4)
+  exclusion.robots.policy: 0.186
+  load_resource: 79.262
+--></body></html>

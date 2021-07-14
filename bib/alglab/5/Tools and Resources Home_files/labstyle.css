@@ -1,0 +1,100 @@
+body {
+     background-color:#ccccdd;
+  
+}
+
+div.header{
+   padding-top:10px;
+   padding-bottom:10px;
+   margin-top:10px;
+   margin-bottom:10px;
+   border-style:ridge;
+   border-width:5px;
+   border-color:#330033;
+   background-color:white;
+   background-image:url('/web/20191105212918im_/https://www.cs.amherst.edu/alglab/comp010.jpg');
+   background-repeat:repeat-x; 
+   background-position: 0px 0px; 
+  }
+
+
+div.box {
+   background-color:white; 
+   margin:5px; 
+   padding:10px;
+   border: 1px solid black;
+   content:p; 
+   max-width:850px; 
+   margin-left:auto;
+   margin-right:auto;
+    }
+
+
+h1 {
+   color:#330033; 
+   text-align:center; 
+   font-family:"Times New Roman", Times, serif;
+   font-style:italic;  }
+h2 {
+   color:#333366;
+   text-align:center;
+   font-family:Arial, Helvetica,sans-serif; 
+   font-style:italic;
+}
+h3 {
+   color:#336633;
+   text-align:left;
+   font-family:Arial, Helvetica, sans-serif; 
+
+}
+h4 {
+   color:black;
+   text-alin:left;
+   font-family:Arial, Helvetica, sans-serif;
+}
+
+p { /* paragraph justified */ 
+       color:#000000;
+       text-align:justify;
+    }
+
+tt, pre {
+    font-size:medium;
+    font-weight:bold;
+   }
+td,th {
+   color: black; 
+   text-align=left;
+   vertical-align=top;
+   padding-left: 10px;
+   padding-right:10px; 
+   padding-top:5px;
+   padding-bottom:5px;
+   empty-cells: "show"; 
+}
+
+a:link    {color: #000000;}   /*unvisited blackish*/
+a:visited {color: #330099;}   /*visited purple*/
+a:hover   {color: #330099;}   /*mouse over purple */
+a:active  {color: #00ff00;}   /*selected green*/ 
+/*
+     FILE ARCHIVED ON 21:29:18 Nov 05, 2019 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 23:36:00 Jul 14, 2021.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+/*
+playback timings (ms):
+  PetaboxLoader3.datanode: 95.728 (4)
+  CDXLines.iter: 21.31 (3)
+  LoadShardBlock: 1361.542 (3)
+  PetaboxLoader3.resolve: 32.075
+  exclusion.robots.policy: 0.171
+  esindex: 0.013
+  exclusion.robots: 0.183
+  captures_list: 1388.069
+  RedisCDXSource: 0.633
+  load_resource: 62.045
+*/

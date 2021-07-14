@@ -1,0 +1,129 @@
+
+<!-- saved from url=(0098)https://web.archive.org/web/20191105212940/https://www.cs.amherst.edu/alglab/binpacklab/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./BinPackLab_Home_files/analytics.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app31.us.archive.org';v.server_ms=177;archive_analytics.send_pageview({});});</script><script type="text/javascript" src="./BinPackLab_Home_files/playback.bundle.js" charset="utf-8"></script>
+<script type="text/javascript" src="./BinPackLab_Home_files/wombat.js" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("https://www.cs.amherst.edu/alglab/binpacklab/index.html","20191105212940","https://web.archive.org/","web","/_static/",
+	      "1572989380");
+</script>
+<link rel="stylesheet" type="text/css" href="./BinPackLab_Home_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="./BinPackLab_Home_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+<link rel="stylesheet" type="text/css" href="./BinPackLab_Home_files/labstyle.css">
+<title>AlgLab</title>
+</head>
+
+<body><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display: block; direction: ltr;">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20191105212940/https://www.cs.amherst.edu/alglab/binpacklab/index.html</div>
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="./BinPackLab_Home_files/donate.html" scrolling="no" frameborder="0" style="width:100%; height:100%">
+    </iframe>
+  </div>
+</div><script type="text/javascript">
+__wm.bt(650,27,25,2,"web","https://www.cs.amherst.edu/alglab/binpacklab/index.html","20191105212940",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<div class="header">
+
+<!-- This is the banner content for every page -->
+<h1>AlgLab: An Open Laboratory for Experiments On Algorithms</h1>
+<table align="center" width="100%">
+<tbody><tr>
+<td align="center">
+<a href="https://web.archive.org/web/20191105212940/https://www.cs.amherst.edu/alglab/index.html">AlgLab Home</a> 
+</td>
+<td align="center">
+<a href="https://web.archive.org/web/20191105212940/https://www.cs.amherst.edu/alglab/about.html">About</a>
+</td>
+<td align="center">
+<a href="https://web.archive.org/web/20191105212940/https://www.cs.amherst.edu/alglab/labs.html">Labs</a>
+</td>
+<td align="center">
+<a href="https://web.archive.org/web/20191105212940/https://www.cs.amherst.edu/alglab/related.html">Related</a>
+</td> 
+<td align="center">
+<a href="https://web.archive.org/web/20191105212940/https://www.cs.amherst.edu/alglab/contribute.html">Contribute</a>
+</td> 
+</tr></tbody></table> 
+</div>
+
+<div class="box">
+<h2>BinPackLab: Approximation algorithms for one-dimensional bin packing</h2> 
+
+<h3>About the Lab</h3> 
+
+The One-Dimensional Bin Packing Problem is: Given a list L containing <b>n</b> weights in the range <b>lo</b>, <b>hi</b>,  to pack the 
+weights into unit-capacity bins so as to minimize the total number of bins used.  Bin Packing is NP-Hard.
+
+Under the standard average-case model, each instance is a list of <b>n</b> weights drawn uniformly at random from the range <b>lo</b>, <b>hi</b>. This
+lab contains generators and code for several approximation algorithms: 
+
+<ul>
+<li><b>First Fit</b>: for each weight in input order,  consider the bins from left to right and pack the weight into the first (leftmost)
+bin that can hold it.
+</li><li><b>First Fit Decreasing</b>: sort the weights in decreasing order and then apply First Fit.
+</li></ul> 
+
+<hr>
+<h3>Resources and Links</h3>
+Code contributed by C. McGeoch and J. L. Bentley 
+<ul>
+<li><a href="https://web.archive.org/web/20191105212940/https://www.cs.amherst.edu/alglab/binpacklab/pack.c"><b>pack.c</b></a> C 
+code implementing First Fit (with an internal random list generator). Uncomment
+the qsort line to get First Fit Decreasing.  This is tuned O(n log n) code. 
+</li><li><a href="https://web.archive.org/web/20191105212940/https://www.cs.amherst.edu/alglab/binpacklab/packsimplest.c"><b>packsimplest.c</b></a>
+C code implementing First Fit with a slower O(n^2) implementation. 
+Uncomment the qsort line to get First Fit Decreasing. 
+</li></ul>
+
+<hr>
+<h3>Projects</h3> 
+
+<ol>
+<li>What is the asymptotic cost of First Fit? 
+</li><li>Characterize the cost of FF, measuring both Bin Counts and Empty 
+Space, as a function of l, u, and n.  
+</li><li>Revise the code to apply trial overloading by reporting incremental
+results after every k items are packed.  Does this give better views of packing
+performance? 
+</li></ol> 
+
+</div>
+
+
+
+<!--
+     FILE ARCHIVED ON 21:29:40 Nov 05, 2019 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 23:30:17 Jul 14, 2021.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  exclusion.robots: 0.395
+  RedisCDXSource: 3.59
+  esindex: 0.013
+  captures_list: 79.692
+  exclusion.robots.policy: 0.376
+  load_resource: 89.261
+  CDXLines.iter: 24.091 (3)
+  LoadShardBlock: 47.617 (3)
+  PetaboxLoader3.datanode: 84.138 (4)
+  PetaboxLoader3.resolve: 48.314
+--></body></html>
