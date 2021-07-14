@@ -1,152 +1,624 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Wayback Machine</title>
-<script src="//archive.org/includes/analytics.js?v=cf34f82" type="text/javascript"></script>
-<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app200.us.archive.org';v.server_ms=133;archive_analytics.send_pageview({});});</script><script type="text/javascript" src="/_static/js/playback.bundle.js?v=xTFGO54E" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css" href="/_static/css/banner-styles.css?v=omkqRugM" />
-<link rel="stylesheet" type="text/css" href="/_static/css/iconochive.css?v=qtvMKcIJ" />
-<script src="/_static/js/jquery-1.11.1.min.js"></script>
-</head>
-<body style="overflow:hidden;">
-<!-- BEGIN WAYBACK TOOLBAR INSERT -->
-<style type="text/css">
-body {
-  margin-top:0 !important;
-  padding-top:0 !important;
-  /*min-width:800px !important;*/
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+#include<stdlib.h>
+#include<time.h>
+
+/* Code to generate the essential subgraph H of a random uniform graph G */
+/* By C. McGeoch, modified 5/10 for AlgLab                               */
+/* Version 2: memoization with a distance matrix, plus filtering  */  
+/* (formerly version2a) */ 
+
+/* Inputs (one per line): */
+/*   nodes n              */
+/*   trials t             */
+/*   seed s     (optional)*/
+
+/* Output: (all on one line)       */
+/* Trial number, G.nodes, G.edges, */
+/* Edges in H                      */
+/* Cost of last edge in H          */
+/* Rank (in G) of last edge in H   */
+/* Rank (in G) of largest MST edge */
+/* MST Diameter                    */ 
+
+#define Assert( cond , msg ) if ( ! (cond) ) {printf("msg \n"); exit(1);} ; 
+
+#define MAXNODES 1601
+#define MAXEDGES 1279201 
+#define TRUE 1
+#define FALSE 0 
+#define INFINITY -9999999.0
+
+typedef char string[50]; 
+
+double dmatrix[MAXNODES][MAXNODES]; 
+
+/*-------------------------------------------------------------------------*/
+/* Definitions for G and E graphs                                          */
+/*-------------------------------------------------------------------------*/
+typedef struct edgestr {       /*  Edges of essential subgraph (adj list) */
+  int dest;
+  double cst; 
+  struct edgestr *next; 
+} edgetype ; 
+
+
+typedef struct nodestr {        /* Nodes of essential subgraph */
+  edgetype *first;
+  edgetype *last; 
+} nodetype;
+
+
+typedef struct {       /* Edges in random generated graph  */ 
+   int vv;
+   int ww;
+   double cost; 
+ } gedgetype; 
+
+int edgecount;                    /* Number edges generated */ 
+int edgeindex;                    /* index in edge array of G*/ 
+double curmax;
+double mydrand(); 
+double drand48(); 
+
+gedgetype edgeset[MAXEDGES];      /*  Edges of G */ 
+nodetype nodelist[MAXNODES];      /*  Nodes of E*/ 
+
+/*-----------------------------------------------------*/
+/* Global parameters and param table                   */
+/*-----------------------------------------------------*/
+int nodes, trials, seed;  
+
+int totedges; 
+int rand_seed;       /*boolean for random or supplied seed*/ 
+string cmdtable[10]; 
+int cmdtable_size; 
+
+
+/*-------------------------------------------------------*/ 
+/*  Input Handlers and Misc.                             */ 
+/*-------------------------------------------------------*/
+/*--------------tabinit-------------------------*/
+void tabinit()
+{
+  cmdtable_size = 3; 
+
+  strcpy(cmdtable[0], "sentinel.spot"); 
+  strcpy(cmdtable[1], "nodes");
+  strcpy(cmdtable[2], "trials");
+  strcpy(cmdtable[3], "seed"); 
+  nodes=MAXNODES;
+  trials=1;
+  rand_seed = TRUE;  
 }
-</style>
-<script>__wm.rw(0);</script>
-<div id="wm-ipp-base" lang="en" style="display:none;direction:ltr;">
-<div id="wm-ipp" style="position:fixed;left:0;top:0;right:0;">
-<div id="wm-ipp-inside">
-  <div style="position:relative;">
-    <div id="wm-logo" style="float:left;width:110px;padding-top:12px;">
-      <a href="/web/" title="Wayback Machine home page"><img src="/_static/images/toolbar/wayback-toolbar-logo-200.png" srcset="/_static/images/toolbar/wayback-toolbar-logo-100.png, /_static/images/toolbar/wayback-toolbar-logo-150.png 1.5x, /_static/images/toolbar/wayback-toolbar-logo-200.png 2x" alt="Wayback Machine" style="width:100px" border="0" /></a>
-    </div>
-    <div class="r" style="float:right;">
-      <div id="wm-btns" style="text-align:right;height:25px;">
-                  <div id="wm-save-snapshot-success">success</div>
-          <div id="wm-save-snapshot-fail">fail</div>
-          <a id="wm-save-snapshot-open" href="#"
-	     title="Share via My Web Archive" >
-            <span class="iconochive-web"></span>
-          </a>
-          <a href="https://archive.org/account/login.php"
-             title="Sign In"
-             id="wm-sign-in"
-          >
-            <span class="iconochive-person"></span>
-          </a>
-          <span id="wm-save-snapshot-in-progress" class="iconochive-web"></span>
-        	<a href="http://faq.web.archive.org/" title="Get some help using the Wayback Machine" style="top:-6px;"><span class="iconochive-question" style="color:rgb(87,186,244);font-size:160%;"></span></a>
-	<a id="wm-tb-close" href="#close" onclick="__wm.h(event);return false;" style="top:-2px;" title="Close the toolbar"><span class="iconochive-remove-circle" style="color:#888888;font-size:240%;"></span></a>
-      </div>
-      <div id="wm-share">
-          <a href="/web/20191105213021/http://web.archive.org/screenshot/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/subgraph2.c"
-             id="wm-screenshot"
-             title="screenshot">
-            <span class="wm-icon-screen-shot"></span>
-          </a>
-          <a href="#"
-            id="wm-video"
-            title="video">
-            <span class="iconochive-movies"></span>
-          </a>
-	<a id="wm-share-facebook" href="#" data-url="https://web.archive.org/web/20191105213021/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/subgraph2.c" title="Share on Facebook" style="margin-right:5px;" target="_blank"><span class="iconochive-facebook" style="color:#3b5998;font-size:160%;"></span></a>
-	<a id="wm-share-twitter" href="#" data-url="https://web.archive.org/web/20191105213021/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/subgraph2.c" title="Share on Twitter" style="margin-right:5px;" target="_blank"><span class="iconochive-twitter" style="color:#1dcaff;font-size:160%;"></span></a>
-      </div>
-    </div>
-    <table class="c" style="">
-      <tbody>
-	<tr>
-	  <td class="u" colspan="2">
-	    <form target="_top" method="get" action="/web/submit" name="wmtb" id="wmtb"><input type="text" name="url" id="wmtbURL" value="https://www.cs.amherst.edu/alglab/essentialsubgraphlab/subgraph2.c" onfocus="this.focus();this.select();" /><input type="hidden" name="type" value="replay" /><input type="hidden" name="date" value="20191105213021" /><input type="submit" value="Go" /></form>
-	  </td>
-	  <td class="n" rowspan="2" style="width:110px;">
-	    <table>
-	      <tbody>
-		<!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
-		<tr class="m">
-		  <td class="b" nowrap="nowrap">Oct</td>
-		  <td class="c" id="displayMonthEl" title="You are here: 21:30:21 Nov 05, 2019">NOV</td>
-		  <td class="f" nowrap="nowrap">Dec</td>
-		</tr>
-		<!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
-		<tr class="d">
-		  <td class="b" nowrap="nowrap"><img src="/_static/images/toolbar/wm_tb_prv_off.png" alt="Previous capture" width="14" height="16" border="0" /></td>
-		  <td class="c" id="displayDayEl" style="width:34px;font-size:24px;white-space:nowrap;" title="You are here: 21:30:21 Nov 05, 2019">05</td>
-		  <td class="f" nowrap="nowrap"><img src="/_static/images/toolbar/wm_tb_nxt_off.png" alt="Next capture" width="14" height="16" border="0" /></td>
-		</tr>
-		<!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
-		<tr class="y">
-		  <td class="b" nowrap="nowrap">2018</td>
-		  <td class="c" id="displayYearEl" title="You are here: 21:30:21 Nov 05, 2019">2019</td>
-		  <td class="f" nowrap="nowrap">2020</td>
-		</tr>
-	      </tbody>
-	    </table>
-	  </td>
-	</tr>
-	<tr>
-	  <td class="s">
-	    	    <div id="wm-nav-captures">
-	      	      <a class="t" href="/web/20191105213021*/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/subgraph2.c" title="See a list of every capture for this URL">1 capture</a>
-	      <div class="r" title="Timespan for captures of this URL">05 Nov 2019</div>
-	      </div>
-	  </td>
-	  <td class="k">
-	    <a href="" id="wm-graph-anchor">
-	      <div id="wm-ipp-sparkline" title="Explore captures for this URL" style="position: relative">
-		<canvas id="wm-sparkline-canvas" width="650" height="27" border="0"></canvas>
-	      </div>
-	    </a>
-	  </td>
-	</tr>
-      </tbody>
-    </table>
-    <div style="position:absolute;bottom:0;right:2px;text-align:right;">
-      <a id="wm-expand" class="wm-btn wm-closed" href="#expand" onclick="__wm.ex(event);return false;"><span id="wm-expand-icon" class="iconochive-down-solid"></span> <span style="font-size:80%">About this capture</span></a>
-    </div>
-  </div>
-    <div id="wm-capinfo" style="border-top:1px solid #777;display:none; overflow: hidden">
-                <div id="wm-capinfo-timestamps">
-    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center" title="Timestamps for the elements of this page">TIMESTAMPS</div>
-    <div>
-      <div id="wm-capresources" style="margin:0 5px 5px 5px;max-height:250px;overflow-y:scroll !important"></div>
-      <div id="wm-capresources-loading" style="text-align:left;margin:0 20px 5px 5px;display:none"><img src="/_static/images/loading.gif" alt="loading" /></div>
-    </div>
-    </div>
-  </div></div></div></div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20191105213021/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/subgraph2.c</div>
-<div id="donato" style="position:relative;width:100%;">
-  <div id="donato-base">
-    <iframe id="donato-if" src="https://archive.org/includes/donate.php?as_page=1&amp;platform=wb&amp;referer=https%3A//web.archive.org/web/20191105213021/https%3A//www.cs.amherst.edu/alglab/essentialsubgraphlab/subgraph2.c"
-	    scrolling="no" frameborder="0" style="width:100%; height:100%">
-    </iframe>
-  </div>
-</div><script type="text/javascript">
-__wm.bt(650,27,25,2,"web","https://www.cs.amherst.edu/alglab/essentialsubgraphlab/subgraph2.c","20191105213021",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
-  __wm.rw(1);
-</script>
-<!-- END WAYBACK TOOLBAR INSERT --><iframe id="playback" src="https://web.archive.org/web/20191105213021if_/https://www.cs.amherst.edu/alglab/essentialsubgraphlab/subgraph2.c" frameborder="0" style="position:absolute;top:65px;left:0;width:100%;">
-</iframe>
-<script type="text/javascript">
-var margin_top = 65;
-function fitPlayback() {
-  $('#playback').css({
-    height: (window.innerHeight - margin_top) + 'px',
-    top: margin_top
-  });
+/*------------lookup command in table------------ */ 
+int lookup (cmd) 
+string cmd;  
+{
+  /* lookup commands in command table */ 
+  int i; 
+  int stop;  
+  strcpy(cmdtable[0], cmd); 
+  stop = 1; 
+  for (i=cmdtable_size; stop != 0 ; i--) stop = strcmp(cmdtable[i], cmd); 
+  return ( i+1 );
+}/*lookup*/ 
+
+/*------------translate input command---------------*/ 
+void transinput() { 
+  char cmd[50], buf[50];
+  int index;  
+  while (scanf("%s", cmd) != EOF ) { 
+    fgets(buf, sizeof(buf), stdin);
+
+    index = lookup (cmd);
+    switch (index ) {
+    case 0 : { printf("%s: Unknown command\n", cmd); 
+	       break;
+	     }
+    case 1 : { sscanf( buf, "%d", &nodes);
+	       Assert(1<=nodes && nodes<=MAXNODES , Nodes out of range. ); 
+	       break;
+	     }
+    case 2: { sscanf( buf, "%d", &trials); 
+	      break;
+	    }
+    case 3: { sscanf( buf, "%d", &seed); 
+ 	      rand_seed = FALSE; 
+	      break; 
+	    }
+    }/*switch*/
+  }/*while scanf */
+
+  if (rand_seed == TRUE) srand48((int) time(0));
+  else srand48(seed);
+
+}/*transinput*/
+
+
+
+/*--------------------------------------------------------------------------*/
+/*  The Heap used for Dijkstra searches                                     */
+/* -------------------------------------------------------------------------*/
+typedef struct {    /* Heap elements */ 
+  int hid;          /* node name  */ 
+  double hval;      /* distance from src */ 
+} heaptype;
+
+int      heapsize;       /* heap is in locations 1..heapsize */ 
+heaptype heap[MAXNODES];
+int      hloc[MAXNODES]; /* location backpointers in heap   */ 
+
+
+/* --heapinit -------initialize empty with one node,  dist = 0 */ 
+void heapinit(int src) { 
+  heap[1].hid = src;
+  heap[1].hval = 0.0; 
+  hloc[heap[1].hid] = 1; 
+  heapsize = 1; 
+
+} 
+/*-------heapextract -----------------------------------------*/ 
+heaptype heapextract() { 
+
+  heaptype heaptop  = heap[1]; 
+
+  heap[1] = heap[heapsize--]; 
+  hloc[ heap[1].hid ]  = 1; 
+
+  heaptype  tmp; 
+  int hix = 1; 
+  int lchild, rchild, which; 
+  double min ; 
+
+
+#ifdef HEAP 
+  int i; 
+  printf("removed %d %lf\n", heaptop.hid, heaptop.hval); 
+  printf("heap before siftdown :\n");
+  for (i = 1; i <= heapsize; i++) {
+    printf("\t %d  %d  %d  %lf\n",i, hloc[heap[i].hid], heap[i].hid, heap[i].hval);
+  }
+#endif 
+
+ /* siftdown */  
+  while ( hix <  heapsize) {
+    min = heap[hix].hval;
+    which = hix; 
+
+    lchild = hix*2; 
+    if (lchild <= heapsize && heap[lchild].hval < min ) { 
+      min = heap[lchild].hval;
+      which = lchild; 
+    }
+    rchild = hix*2 + 1; 
+    if (rchild <= heapsize && heap[rchild].hval < min) {
+      min = heap[rchild].hval;
+      which = rchild; 
+    } 
+    if (which == hix) break;
+    else { /* swap */ 
+      tmp = heap[hix];
+      heap[hix] = heap[ which ]; 
+      hloc[ heap[hix].hid] = hix; 
+
+      heap[ which ] = tmp;
+      hloc[ heap[which].hid ] = which;
+
+      hix = which; 
+    }
+  }/* while */ 
+
+#ifdef HEAP 
+  printf("\n heap after siftdown (size %d) to  %d \n" , heapsize, hix); 
+  for (i= 1; i <= heapsize; i++) 
+    printf("%d  %d  %d  %lf \n", i , hloc[heap[i].hid], heap[i].hid,  heap[i].hval); 
+  printf("*\n");
+  fflush(stdout); 
+#endif
+
+  return heaptop;  }  /* extractmin */ 
+
+/*---siftup from position hix ------------------------------------*/  
+void siftup (int hix) { 
+
+  heaptype tmp ; 
+
+#ifdef HEAP
+  int i; 
+  printf("before siftup from location %d \n", hix);
+  for (i = 1; i <= heapsize; i++) 
+    printf("\t %d %d %d %lf \n",  i, hloc[heap[i].hid], heap[i].hid, heap[i].hval);
+ 
+#endif 
+
+  while (hix > 1) { 
+    int parent = hix/2; 
+
+    if ( heap[hix].hval  <  heap[ parent ].hval ) {
+      tmp = heap[hix];
+      heap[hix] = heap[parent];
+      heap[parent] = tmp;
+
+      hloc[ heap[hix].hid ] = hix;
+      hloc[ heap[parent].hid] = parent;
+
+      hix = parent;
+    } else break;
+
+
+  }/*while*/ 
+
+#ifdef HEAP 
+  printf("after siftup to location %d \n", hix);
+  for (i = 1; i <= heapsize; i++) 
+   printf("\t %d %d %d %lf \n",  i, hloc[heap[i].hid], heap[i].hid, heap[i].hval);
+#endif 
+
 }
-fitPlayback();
-$(window).on('resize', function() {
-  fitPlayback(); 
-});
-$('#wm-tb-close').click(function(){
-  margin_top = 0;
-  fitPlayback();
-});
-</script>
-</body>
-</html>
+
+/*---heapinsert------------------------------------------------*/ 
+void heapinsert( int nodename, double dist ) {
+
+  heapsize++;
+  heap[heapsize].hid = nodename;
+  heap[heapsize].hval = dist; 
+
+  hloc[ nodename ] = heapsize;
+  siftup( heapsize); 
+
+#ifdef DEBUG_H
+  printf("\n hinsert %d  %lf hsize %d \n", nodename, dist, heapsize); 
+#endif
+
+ }  /* insert new into heap */ 
+
+/* -heapgetinx--------------------return index for query, update */ 
+int heapgetinx (int node) { 
+    return  hloc[node];  
+} 
+
+/*-heapgetdist----------------return distance for comparison    */ 
+double heapgetdist( int inx) {
+  return heap[ inx ].hval;
+} 
+
+/*heapdecreasekey-----------------------------------------------*/
+void heapdecreasekey( int inx, double newval) { 
+  heap[ inx ].hval = newval;
+  siftup (inx);
+} 
+
+/*--------------------------------------------------------------------------*/
+/*  Essential Subgraph distance calculation, insert, init                   */
+/*--------------------------------------------------------------------------*/ 
+
+
+
+/*-----distance: search from s to d in E, return distance or infty      */ 
+/*                                                                      */ 
+double distance(int s,int d, double ecost)  {
+
+  edgetype *nptr;
+  int ename;   
+  double edist; 
+  double curdist; 
+
+  int  unseen = 0; 
+  int  inheap = 1;
+  int  seen = 2; 
+  int status[MAXNODES];  /* For shortest-path search */ 
+
+  /*V1: memoization*/ 
+  if ((dmatrix[s][d] != INFINITY) && (dmatrix[s][d] < ecost)) 
+     return dmatrix[s][d]; 
+ 
+  int i; 
+  for (i = 1; i <= nodes; i++) {
+    status[i] = unseen; 
+
+  } 
+  status[s] = inheap;
+
+  /* initalize heap to source vertex */ 
+  heapinit (s); 
+  heaptype x;  
+ 
+  while ( heapsize != 0 ) {
+    x  = heapextract();
+
+   /* V1: distance matrix */ 
+   dmatrix[s][x.hid] = x.hval;
+   dmatrix[x.hid][s] = x.hval; 
+ 
+   if (x.hid == d) return x.hval;  /* found it */  
+
+   /* V2: abort the loop if this lb on distance to w is too big */ 
+   /* V2 is faster if this tuneup is not used */  
+   // if (x.hval > ecost) return x.hval; 
+   status[x.hid] = seen; 
+   curdist = x.hval; 
+
+   /* for each neighbor e of x*/ 
+   nptr = nodelist[x.hid].first;  
+   while (nptr != NULL) {
+     ename = nptr->dest;
+     edist = curdist + nptr->cst;
+
+     /* V2: filter the data structure */ 
+     if ( edist > ecost );      /* skip it */
+     else
+       if (status[ename] == unseen) { 
+	 heapinsert( ename, edist) ; 
+	 status[ename] = inheap; 
+     }
+     else if (status[ename]==inheap) {
+       int heapx = heapgetinx(ename); 
+       if (edist < heapgetdist( heapx ) ) {
+	 heapdecreasekey (heapx, edist) ; 
+       }
+     }/* else status = seen */ 
+     nptr = nptr -> next;
+     
+   }/* for each neaighbor */ 
+  }/* while heapsize */ 
+
+  return INFINITY;  /* didn't find d reachible from s */  
+
+}/*distance */ 
+
+/*-------------insert---------------------------------------*/
+void insert(int v, int w, double cost)  
+{
+  edgetype *newedge;
+  edgetype *lptr; 
+
+#ifdef DEBUGINS 
+  printf("\t\t subgrinsert %d %d %lf\n", v, w, cost); 
+     fflush(stdout); 
+#endif 
+
+  /* insert edge in v list */
+   newedge = (edgetype *) malloc( sizeof(  edgetype  ) );
+   newedge->dest = w; 
+   newedge->cst = cost;
+   newedge->next = NULL;
+   if (nodelist[v].first == NULL) {
+       nodelist[v].first = newedge;
+     } else{
+       lptr = nodelist[v].last;
+       lptr->next = newedge;
+     } 
+    nodelist[v].last = newedge; 
+
+   /* insert in w list */ 
+   newedge = (edgetype *) malloc( sizeof( edgetype ) );
+   newedge->dest = v; 
+   newedge->cst = cost;
+   newedge->next = NULL;
+   if (nodelist[w].first == NULL) {
+       nodelist[w].first = newedge;
+     } else{
+       lptr = nodelist[w].last;
+       lptr->next = newedge;
+     } 
+   nodelist[w].last = newedge; 
+
+}/*insert*/ 
+
+
+/*-------------------------------------------------------------*/
+/*       Generation of random edges and costs                  */ 
+/*-------------------------------------------------------------*/
+
+/*------------------mydrand-------------------------------------*/
+double mydrand()
+{
+  return(drand48()); /* Reals on (0.0, 1.0]*/ 
+} 
+/*--------------- nextedge------------------------------------*/
+/*  Return the next edge, v, w, cost                          */ 
+
+void nextedge( int* v, int* w, double* cost)
+{
+  gedgetype  tmp = edgeset[edgeindex++];
+
+  *v = tmp.vv;
+  *w = tmp.ww;
+  *cost = tmp.cost;
+}
+
+/*--dcompare-----------------------------------*/
+/* for qsort                                   */ 
+int dcompare( const void *a, const void *b) {
+    
+    gedgetype *aa = (gedgetype* ) a;
+    gedgetype *bb = (gedgetype* ) b; 
+
+    if ( aa->cost < bb->cost ) return -1;
+    else if (aa-> cost > bb->cost ) return +1;
+    else return 0;
+} 
+
+/*-----------------graphinit-------------------------------------------------------*/
+/* S: initialize nodes (nodelist with edgeset empty                                */ 
+/* S is an adjacency list, with edges doubled                                      */ 
+/* G: is a list of random edges, in random vertex order                            */ 
+/* The graph is undirected, nodes numbered 1..nodes, in array [1..nodes]           */
+/*  There is one copy of each edge, oriented to indices (vv=lo, ww = hi)           */ 
+/*  Sorted by edge cost                                                            */
+
+void graphinit()
+{
+   int i, j, k;
+
+   /* initialize node pointers for the subgraph E */ 
+   totedges = nodes * (nodes-1) / 2; 
+   for (i=1; i<= nodes; i++) {
+	nodelist[i].first = NULL;
+        nodelist[i].last = NULL;
+      }
+   
+   /* initialize edges in the random input graph */ 
+   k=0; 
+   for (i=1; i<= nodes-1 ; i++) {
+     for (j=i+1; j<= nodes; j++) {
+         edgeset[k].vv= i; 
+	 edgeset[k].ww = j;
+         edgeset[k].cost = mydrand();  /* random uniform 0..1 */
+         k++;
+    }
+   }
+   /* sort the edges by cost */ 
+   qsort (edgeset, totedges, sizeof(gedgetype), dcompare); 
+   edgeindex = 0;     /* first edge returned*/ 
+
+#ifdef DEBUGSRT
+   for (i = 0; i < totedges; i++) 
+     printf("%d \t %d \t %d \t %lf \n", i,edgeset[i].vv, edgeset[i].ww, edgeset[i].cost); 
+     fflush(stdout); 
+#endif 
+
+}/*graphinit*/
+
+/*---printsg for output  */ 
+void printsg() {
+  edgetype *nptr; 
+  int ename; 
+  double ecost; 
+  int i; 
+  int ctr; 
+  
+  /* The subgraph */ 
+  for (i = 1; i <= nodes; i++) {
+    printf("Node %d: \n ", i ); 
+    ctr = 0; 
+    nptr = nodelist[i].first; 
+    while (nptr != NULL ) {
+      ename = nptr->dest;
+      ecost = nptr->cst; 
+      printf("(%d  %lf) \t", ename, ecost); 
+      nptr = nptr->next; 
+      if (ctr % 10 == 0) printf("\n"); 
+    }
+    printf("\n");
+  }
+} 
+
+/*---freesg for new trial  */ 
+void freesg() {
+  edgetype *nptr; 
+  int i; 
+  edgetype *nextedge;   
+
+  /* The free subgraph */ 
+  for (i = 1; i <= nodes; i++) {
+    nptr = nodelist[i].first;
+ 
+    while (nptr != NULL ) {
+      nextedge = nptr->next; 
+      free (nptr); 
+      nptr = nextedge; 
+    }
+
+    nodelist[i].first = NULL;
+    nodelist[i].last = NULL; 
+  }
+} 
+
+/* V1: initialize the distance matrix */ 
+void dminit() { 
+  int i, j; 
+  for (i = 1; i <= nodes; i++) 
+    for (j= 1; j <= nodes; j++) dmatrix[i][j] = INFINITY; 
+} 
+
+
+/*----------------------------------------------*/ 
+/*---------------------main---------------------*/ 
+int main(int argc, char** argv)
+{
+  int DONE; 
+  double ecost; 
+  int v,w;
+  int tr; 
+
+  double  limit = 1.1;
+  double lastcost = 1.1;
+  int lastrank = totedges;
+  int insertcount = 0;  
+  double mindist; 
+
+  tabinit();      
+  transinput();   /* get input commands */ 
+
+#ifdef DEBUG
+  printf("input %d %d %d\n", nodes, trials, seed);
+     fflush(stdout); 
+#endif 
+  
+  for( tr= 0 ; tr< trials; tr++) {
+
+    graphinit();     /* generate random graph, initialize subgraph */ 
+
+    /* V1: initialize the distance matrix*/ 
+    dminit(); 
+
+    limit =  1.1;   /* larger than any edge size */ 
+    
+    edgecount=0;           /* num generated: incremented in nextedge */ 
+    insertcount = 0;       /* num in subgraph */
+    lastcost = 0;          /* last edge in graph */
+    lastrank = 0;          /* rank of last edge in graph */ 
+  
+    curmax = 1.0;          /* modified in nextcost */  
+
+    DONE = FALSE;  
+    while (!DONE) {        /* generate the subgraph */    
+
+      nextedge(&v, &w, &ecost);    
+      edgecount++; 
+      mindist = distance(v,w, ecost);
+
+#ifdef DEBUG
+      printf("edge %d : (%d  %d %lf) dist %lf ", edgecount, v,w,ecost, mindist);
+      if (mindist == INFINITY) printf("ins \n"); 
+      else if (mindist > ecost) printf("ins \n");
+      else printf("out \n"); 
+     fflush(stdout); 
+#endif 
+
+
+     if ( (mindist == INFINITY)|| (mindist > ecost)) { 
+            insert(v,w,ecost); 
+            insertcount++; 
+            lastcost = ecost;
+	    lastrank = edgecount; 
+     } 
+   
+     
+     if (ecost > limit) DONE = TRUE;   
+     if (edgecount >= totedges) DONE = TRUE; 
+
+   }/*while still checking edges*/ 
+
+#ifdef SEEOUTPUT 
+    printsg();
+    fflush(stdout); 
+#endif 
+
+  printf("%d %d %d   %d %lf %d  %lf\n", 
+	 tr, nodes, totedges, insertcount, lastcost, lastrank,  limit);
+
+  freesg(); 
+
+  }/*for each trial */ 
+
+  return 0; 
+}/* main */ 
+
+
+
+
+

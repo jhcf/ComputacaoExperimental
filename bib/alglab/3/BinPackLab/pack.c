@@ -1,152 +1,129 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Wayback Machine</title>
-<script src="//archive.org/includes/analytics.js?v=cf34f82" type="text/javascript"></script>
-<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app105.us.archive.org';v.server_ms=210;archive_analytics.send_pageview({});});</script><script type="text/javascript" src="/_static/js/playback.bundle.js?v=xTFGO54E" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css" href="/_static/css/banner-styles.css?v=omkqRugM" />
-<link rel="stylesheet" type="text/css" href="/_static/css/iconochive.css?v=qtvMKcIJ" />
-<script src="/_static/js/jquery-1.11.1.min.js"></script>
-</head>
-<body style="overflow:hidden;">
-<!-- BEGIN WAYBACK TOOLBAR INSERT -->
-<style type="text/css">
-body {
-  margin-top:0 !important;
-  padding-top:0 !important;
-  /*min-width:800px !important;*/
+/* pack.c: Workhorse experiment on First Fit Decreasing bin packing
+    Usage: pack
+	Each input line specifies an experiment in three fields
+		n		Number of weights in experiment
+		lb		Lower bound on size of uniform weights (0 <= lb <= ub <= 1)
+		ub		Upper bound on size of weight
+	Results of each experiment produced on one output line
+		n, lb, ub	Repeat of inputs
+		used	Number of bins used for packing
+		big		Number of weights > .5
+		es		Total empty space in all used bins
+		tes		Empty space in tops of all bins except the last
+	History
+		Jon Bentley, 22 April 2005
+			Brushed off and reassembled old bin packing code
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+
+/* MISCELLANEOUS SUPPORT ROUTINES */
+
+void error(char *s)	/* report error and die */
+{	fprintf(stderr, "pack error: %s\n", s);
+	exit(1);
 }
-</style>
-<script>__wm.rw(0);</script>
-<div id="wm-ipp-base" lang="en" style="display:none;direction:ltr;">
-<div id="wm-ipp" style="position:fixed;left:0;top:0;right:0;">
-<div id="wm-ipp-inside">
-  <div style="position:relative;">
-    <div id="wm-logo" style="float:left;width:110px;padding-top:12px;">
-      <a href="/web/" title="Wayback Machine home page"><img src="/_static/images/toolbar/wayback-toolbar-logo-200.png" srcset="/_static/images/toolbar/wayback-toolbar-logo-100.png, /_static/images/toolbar/wayback-toolbar-logo-150.png 1.5x, /_static/images/toolbar/wayback-toolbar-logo-200.png 2x" alt="Wayback Machine" style="width:100px" border="0" /></a>
-    </div>
-    <div class="r" style="float:right;">
-      <div id="wm-btns" style="text-align:right;height:25px;">
-                  <div id="wm-save-snapshot-success">success</div>
-          <div id="wm-save-snapshot-fail">fail</div>
-          <a id="wm-save-snapshot-open" href="#"
-	     title="Share via My Web Archive" >
-            <span class="iconochive-web"></span>
-          </a>
-          <a href="https://archive.org/account/login.php"
-             title="Sign In"
-             id="wm-sign-in"
-          >
-            <span class="iconochive-person"></span>
-          </a>
-          <span id="wm-save-snapshot-in-progress" class="iconochive-web"></span>
-        	<a href="http://faq.web.archive.org/" title="Get some help using the Wayback Machine" style="top:-6px;"><span class="iconochive-question" style="color:rgb(87,186,244);font-size:160%;"></span></a>
-	<a id="wm-tb-close" href="#close" onclick="__wm.h(event);return false;" style="top:-2px;" title="Close the toolbar"><span class="iconochive-remove-circle" style="color:#888888;font-size:240%;"></span></a>
-      </div>
-      <div id="wm-share">
-          <a href="/web/20191105213010/http://web.archive.org/screenshot/https://www.cs.amherst.edu/alglab/binpacklab/pack.c"
-             id="wm-screenshot"
-             title="screenshot">
-            <span class="wm-icon-screen-shot"></span>
-          </a>
-          <a href="#"
-            id="wm-video"
-            title="video">
-            <span class="iconochive-movies"></span>
-          </a>
-	<a id="wm-share-facebook" href="#" data-url="https://web.archive.org/web/20191105213010/https://www.cs.amherst.edu/alglab/binpacklab/pack.c" title="Share on Facebook" style="margin-right:5px;" target="_blank"><span class="iconochive-facebook" style="color:#3b5998;font-size:160%;"></span></a>
-	<a id="wm-share-twitter" href="#" data-url="https://web.archive.org/web/20191105213010/https://www.cs.amherst.edu/alglab/binpacklab/pack.c" title="Share on Twitter" style="margin-right:5px;" target="_blank"><span class="iconochive-twitter" style="color:#1dcaff;font-size:160%;"></span></a>
-      </div>
-    </div>
-    <table class="c" style="">
-      <tbody>
-	<tr>
-	  <td class="u" colspan="2">
-	    <form target="_top" method="get" action="/web/submit" name="wmtb" id="wmtb"><input type="text" name="url" id="wmtbURL" value="https://www.cs.amherst.edu/alglab/binpacklab/pack.c" onfocus="this.focus();this.select();" /><input type="hidden" name="type" value="replay" /><input type="hidden" name="date" value="20191105213010" /><input type="submit" value="Go" /></form>
-	  </td>
-	  <td class="n" rowspan="2" style="width:110px;">
-	    <table>
-	      <tbody>
-		<!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
-		<tr class="m">
-		  <td class="b" nowrap="nowrap">Oct</td>
-		  <td class="c" id="displayMonthEl" title="You are here: 21:30:10 Nov 05, 2019">NOV</td>
-		  <td class="f" nowrap="nowrap">Dec</td>
-		</tr>
-		<!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
-		<tr class="d">
-		  <td class="b" nowrap="nowrap"><img src="/_static/images/toolbar/wm_tb_prv_off.png" alt="Previous capture" width="14" height="16" border="0" /></td>
-		  <td class="c" id="displayDayEl" style="width:34px;font-size:24px;white-space:nowrap;" title="You are here: 21:30:10 Nov 05, 2019">05</td>
-		  <td class="f" nowrap="nowrap"><img src="/_static/images/toolbar/wm_tb_nxt_off.png" alt="Next capture" width="14" height="16" border="0" /></td>
-		</tr>
-		<!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
-		<tr class="y">
-		  <td class="b" nowrap="nowrap">2018</td>
-		  <td class="c" id="displayYearEl" title="You are here: 21:30:10 Nov 05, 2019">2019</td>
-		  <td class="f" nowrap="nowrap">2020</td>
-		</tr>
-	      </tbody>
-	    </table>
-	  </td>
-	</tr>
-	<tr>
-	  <td class="s">
-	    	    <div id="wm-nav-captures">
-	      	      <a class="t" href="/web/20191105213010*/https://www.cs.amherst.edu/alglab/binpacklab/pack.c" title="See a list of every capture for this URL">1 capture</a>
-	      <div class="r" title="Timespan for captures of this URL">05 Nov 2019</div>
-	      </div>
-	  </td>
-	  <td class="k">
-	    <a href="" id="wm-graph-anchor">
-	      <div id="wm-ipp-sparkline" title="Explore captures for this URL" style="position: relative">
-		<canvas id="wm-sparkline-canvas" width="650" height="27" border="0"></canvas>
-	      </div>
-	    </a>
-	  </td>
-	</tr>
-      </tbody>
-    </table>
-    <div style="position:absolute;bottom:0;right:2px;text-align:right;">
-      <a id="wm-expand" class="wm-btn wm-closed" href="#expand" onclick="__wm.ex(event);return false;"><span id="wm-expand-icon" class="iconochive-down-solid"></span> <span style="font-size:80%">About this capture</span></a>
-    </div>
-  </div>
-    <div id="wm-capinfo" style="border-top:1px solid #777;display:none; overflow: hidden">
-                <div id="wm-capinfo-timestamps">
-    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center" title="Timestamps for the elements of this page">TIMESTAMPS</div>
-    <div>
-      <div id="wm-capresources" style="margin:0 5px 5px 5px;max-height:250px;overflow-y:scroll !important"></div>
-      <div id="wm-capresources-loading" style="text-align:left;margin:0 20px 5px 5px;display:none"><img src="/_static/images/loading.gif" alt="loading" /></div>
-    </div>
-    </div>
-  </div></div></div></div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20191105213010/https://www.cs.amherst.edu/alglab/binpacklab/pack.c</div>
-<div id="donato" style="position:relative;width:100%;">
-  <div id="donato-base">
-    <iframe id="donato-if" src="https://archive.org/includes/donate.php?as_page=1&amp;platform=wb&amp;referer=https%3A//web.archive.org/web/20191105213010/https%3A//www.cs.amherst.edu/alglab/binpacklab/pack.c"
-	    scrolling="no" frameborder="0" style="width:100%; height:100%">
-    </iframe>
-  </div>
-</div><script type="text/javascript">
-__wm.bt(650,27,25,2,"web","https://www.cs.amherst.edu/alglab/binpacklab/pack.c","20191105213010",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
-  __wm.rw(1);
-</script>
-<!-- END WAYBACK TOOLBAR INSERT --><iframe id="playback" src="https://web.archive.org/web/20191105213010if_/https://www.cs.amherst.edu/alglab/binpacklab/pack.c" frameborder="0" style="position:absolute;top:65px;left:0;width:100%;">
-</iframe>
-<script type="text/javascript">
-var margin_top = 65;
-function fitPlayback() {
-  $('#playback').css({
-    height: (window.innerHeight - margin_top) + 'px',
-    top: margin_top
-  });
+
+double frand()
+{	double s = 1.0 / (RAND_MAX + 1.0);
+	return rand()*s + rand()*s*s + rand()*s*s*s + rand()*s*s*s*s;
 }
-fitPlayback();
-$(window).on('resize', function() {
-  fitPlayback(); 
-});
-$('#wm-tb-close').click(function(){
-  margin_top = 0;
-  fitPlayback();
-});
-</script>
-</body>
-</html>
+
+/* BINS AND HEAP OVER THEM
+    b[1..bl-1] is heap
+	b[bl..bu-1] is the "real" bin area
+ */
+
+typedef double WType;	/* Data type of weights */
+#define NMAX 2097152
+#define BMAX (NMAX*2)
+WType	x[NMAX], b[BMAX+1];
+int		bl, bu;
+
+void initbins(WType u, int n)
+{	int i, guess;
+
+	guess = n;  /* replace with better guess? */
+	bl = 1;
+	while (bl < guess)
+		bl *= 2;
+	bu = 2*bl;
+	if (bu > BMAX)
+		error("too many estimated bins");
+	for (i = 1; i <= bu; i++)
+		b[i] = 0.0;
+}
+
+void insert(WType tw)
+{	int	i, j;
+	WType	ht;
+
+	ht = (WType) (1.0 - tw);
+	if (b[1] > ht)
+		error("ran out of space in bins");
+	/* proceed down heap to bottom level */
+	i = 1;
+	while (i < bl)
+		if (b[i *= 2] > ht)
+			i++;
+	/* add weight to the correct bin */
+	b[i] += tw;
+	if (0) /* change to 1 to draw the packing */
+		printf("\t%d\t%lg\t%lg\n", i-bl, b[i]-tw, tw);
+	/* modify heap on the way back up */
+	for (i /= 2; i >= 1; i /= 2) {
+		j = 2*i;
+		if (b[j+1] < b[j])
+			j++;
+		if (b[i] == b[j])
+			break;
+		b[i] = b[j];
+	}
+}
+
+/* COMPARE FUNCTION FOR QSORT */
+
+int wcomp(WType *a, WType *b)
+{	if (*a < *b)
+		return -1;
+	else if (*a > *b)
+		return 1;
+	else
+		return 0;
+}
+
+/* MAIN */
+
+int main()
+{	WType	lb, ub, es;
+	int		i, big, n, seed;	
+
+	seed = (int) time((long *) 0);
+	/* seed = 1; uncomment for debugging */
+	printf("pack v01 seed=%d\n", seed);
+	srand(seed);
+	while (scanf("%d %lf %lf", &n, &lb, &ub) != EOF) {
+		/* generate and sort inputs */
+		big = 0;
+		for (i = 0; i < n; i++) {
+			x[i] = (WType) (lb + (ub - lb) * frand());
+			if (x[i] > 0.5)
+				big++;
+		}
+		//for ffd:   qsort((char *) x, n, sizeof(WType), wcomp);
+		/* initialize bins and perform the packing*/
+		initbins(ub, n);
+		for (i = n-1; i >= 0; i--)
+			insert(x[i]);
+		/* gather and report statistics */
+		es = 0.0;
+		for (i = bl; b[i] > 0.0; i++)
+			es += (WType) (1.0 - b[i]);
+		printf("%d\t%lg\t%lg\t%d\t%d\t%lg\t%lg\n",
+			n, lb, ub, i-bl, big, es, es - (1.0 - b[i-1]));
+	}
+	return 0;
+}

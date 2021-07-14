@@ -1,152 +1,296 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Wayback Machine</title>
-<script src="//archive.org/includes/analytics.js?v=cf34f82" type="text/javascript"></script>
-<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app56.us.archive.org';v.server_ms=270;archive_analytics.send_pageview({});});</script><script type="text/javascript" src="/_static/js/playback.bundle.js?v=xTFGO54E" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css" href="/_static/css/banner-styles.css?v=omkqRugM" />
-<link rel="stylesheet" type="text/css" href="/_static/css/iconochive.css?v=qtvMKcIJ" />
-<script src="/_static/js/jquery-1.11.1.min.js"></script>
-</head>
-<body style="overflow:hidden;">
-<!-- BEGIN WAYBACK TOOLBAR INSERT -->
-<style type="text/css">
-body {
-  margin-top:0 !important;
-  padding-top:0 !important;
-  /*min-width:800px !important;*/
+#include <stdio.h>
+#include <stdlib.h>
+#define MAXNODES 100
+#define MAXEDGES 100*(100-1)/2  
+
+
+/* RANDOM Random Graph coloring algorithm C.C. McGeoch 2011 
+   Runs I iterations of greedy with random vertex orders, reports best
+   coloring found.  
+
+   Usage: random filename I s
+   filename: input file containing G, in format below. 
+   i: number of iterations
+   s: optional random number seed 
+
+   Input format:
+     n            // first line: number of vertices, named [1..n] 
+     x y z  0     // neighbors of v1, list ending in 0
+     a b c d e 0  // neighbors of v2, list ending in 0
+     ...  
+     x y 0        // neighbors of vn, list ending in 0
+ 
+     Note: Both edges (v,w) and (w,v) must be present in input
+     Lines after end are ignored as comments
+
+   Outputs: 
+     To report performance indicators:       #define REPORTSTATS  1
+     To report the coloring and counts:      #define REPORTCOLORS 1
+     To see some intermediate values #define DEBUG 1
+
+*/ 
+#define REPORTSTATS  1
+#define REPORTCOLORS 1
+#define DEBUG 1
+
+int numnodes=0;    /* number of nodes in the graph */
+int numedges=0; 
+int iterations=1;   /* default */  
+
+/* algorithm statistics*/ 
+int checkcount=0;  /* number of colors checked */
+int colorcount=0;  /* to compute average colors looked at */ 
+int maxcolor=0;    /* max color assigned */ 
+
+/* The graph is represented as an adjacency list in two arrays */ 
+int edgex[MAXNODES+1];      /* index to neighbor array */ 
+int ecount[MAXNODES+1];     /* number of neighbors this node */ 
+int neighbor[MAXEDGES+1];   /* adjacent nodes       */ 
+
+int colorof[MAXNODES+1];    /* node colors */  
+int colorcounts[MAXNODES+1]; /* color distributions */ 
+
+int bestcoloring[MAXNODES+1]; /* save best coloring */ 
+int colordist[MAXNODES+1];    /* save best color distribution */ 
+
+FILE *fp, *fopen();
+
+/*--------------------------------------------------------------*/ 
+/* getgraph: Read input file and build graph */ 
+/* Input Format:  
+      First line is integer number of nodes. 
+      Then: 
+         neighbors of v1, list ending with 0  
+         neighbors of v2, list ending with 0  
+         ... 
+         neighbors of vn, list ending with 0  
+      Lines after n+1 inputs are ignored as comments.
+
+*/
+void getgraph()
+{
+  int i;   
+  int edgeindex = 1; 
+  int edgecount; 
+  int nodeval; 
+
+    fscanf(fp,"%d", &numnodes);  /* number of nodes in graph */
+
+    if (numnodes >MAXNODES) {
+      printf("too many nodes: recompile and try again\n");
+      exit(1); 
+    }
+    
+    for (i=1; i <= numnodes; i++) { 
+      edgex[i] = edgeindex; /* where it starts in edge array */ 
+      
+      fscanf(fp, "%d", &nodeval); 
+      edgecount=0; 
+
+      while (nodeval != 0) {  
+	numedges++;         /* total for accounting */
+        edgecount++;        /* total neighbors this node */ 
+
+        neighbor[edgeindex++] = nodeval; 
+
+	fscanf(fp, "%d", &nodeval);        
+
+      } /* for each adjacent node */
+      ecount[i] = edgecount; 
+
+    } /* for each node in graph */ 
+
+} /* end getgraph */         
+
+
+/*--------------------------------------------------------------*/
+/* check if this color is valid 0 no, 1 yes                     */ 
+
+int checkcolorok(int thenode, int thecolor)
+{
+  int ex = edgex[thenode];  /* index to neighbor list */ 
+  int edges = ecount[thenode]; /* number of neighbors */ 
+
+  int e=1;     
+
+  while (e++ <= edges){
+    checkcount++; 
+    if (colorof [neighbor[ex++] ] == thecolor) return 0; /* false */ 
+  }
+ 
+  return  1; 
 }
-</style>
-<script>__wm.rw(0);</script>
-<div id="wm-ipp-base" lang="en" style="display:none;direction:ltr;">
-<div id="wm-ipp" style="position:fixed;left:0;top:0;right:0;">
-<div id="wm-ipp-inside">
-  <div style="position:relative;">
-    <div id="wm-logo" style="float:left;width:110px;padding-top:12px;">
-      <a href="/web/" title="Wayback Machine home page"><img src="/_static/images/toolbar/wayback-toolbar-logo-200.png" srcset="/_static/images/toolbar/wayback-toolbar-logo-100.png, /_static/images/toolbar/wayback-toolbar-logo-150.png 1.5x, /_static/images/toolbar/wayback-toolbar-logo-200.png 2x" alt="Wayback Machine" style="width:100px" border="0" /></a>
-    </div>
-    <div class="r" style="float:right;">
-      <div id="wm-btns" style="text-align:right;height:25px;">
-                  <div id="wm-save-snapshot-success">success</div>
-          <div id="wm-save-snapshot-fail">fail</div>
-          <a id="wm-save-snapshot-open" href="#"
-	     title="Share via My Web Archive" >
-            <span class="iconochive-web"></span>
-          </a>
-          <a href="https://archive.org/account/login.php"
-             title="Sign In"
-             id="wm-sign-in"
-          >
-            <span class="iconochive-person"></span>
-          </a>
-          <span id="wm-save-snapshot-in-progress" class="iconochive-web"></span>
-        	<a href="http://faq.web.archive.org/" title="Get some help using the Wayback Machine" style="top:-6px;"><span class="iconochive-question" style="color:rgb(87,186,244);font-size:160%;"></span></a>
-	<a id="wm-tb-close" href="#close" onclick="__wm.h(event);return false;" style="top:-2px;" title="Close the toolbar"><span class="iconochive-remove-circle" style="color:#888888;font-size:240%;"></span></a>
-      </div>
-      <div id="wm-share">
-          <a href="/web/20191105213004/http://web.archive.org/screenshot/https://www.cs.amherst.edu/alglab/graphcolorlab/random.c"
-             id="wm-screenshot"
-             title="screenshot">
-            <span class="wm-icon-screen-shot"></span>
-          </a>
-          <a href="#"
-            id="wm-video"
-            title="video">
-            <span class="iconochive-movies"></span>
-          </a>
-	<a id="wm-share-facebook" href="#" data-url="https://web.archive.org/web/20191105213004/https://www.cs.amherst.edu/alglab/graphcolorlab/random.c" title="Share on Facebook" style="margin-right:5px;" target="_blank"><span class="iconochive-facebook" style="color:#3b5998;font-size:160%;"></span></a>
-	<a id="wm-share-twitter" href="#" data-url="https://web.archive.org/web/20191105213004/https://www.cs.amherst.edu/alglab/graphcolorlab/random.c" title="Share on Twitter" style="margin-right:5px;" target="_blank"><span class="iconochive-twitter" style="color:#1dcaff;font-size:160%;"></span></a>
-      </div>
-    </div>
-    <table class="c" style="">
-      <tbody>
-	<tr>
-	  <td class="u" colspan="2">
-	    <form target="_top" method="get" action="/web/submit" name="wmtb" id="wmtb"><input type="text" name="url" id="wmtbURL" value="https://www.cs.amherst.edu/alglab/graphcolorlab/random.c" onfocus="this.focus();this.select();" /><input type="hidden" name="type" value="replay" /><input type="hidden" name="date" value="20191105213004" /><input type="submit" value="Go" /></form>
-	  </td>
-	  <td class="n" rowspan="2" style="width:110px;">
-	    <table>
-	      <tbody>
-		<!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
-		<tr class="m">
-		  <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20150801131203/http://www.cs.amherst.edu:80/alglab/graphcolorlab/random.c" title="01 Aug 2015"><strong>Aug</strong></a></td>
-		  <td class="c" id="displayMonthEl" title="You are here: 21:30:04 Nov 05, 2019">NOV</td>
-		  <td class="f" nowrap="nowrap">Dec</td>
-		</tr>
-		<!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
-		<tr class="d">
-		  <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20150801131203/http://www.cs.amherst.edu:80/alglab/graphcolorlab/random.c" title="13:12:03 Aug 01, 2015"><img src="/_static/images/toolbar/wm_tb_prv_on.png" alt="Previous capture" width="14" height="16" border="0" /></a></td>
-		  <td class="c" id="displayDayEl" style="width:34px;font-size:24px;white-space:nowrap;" title="You are here: 21:30:04 Nov 05, 2019">05</td>
-		  <td class="f" nowrap="nowrap"><img src="/_static/images/toolbar/wm_tb_nxt_off.png" alt="Next capture" width="14" height="16" border="0" /></td>
-		</tr>
-		<!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
-		<tr class="y">
-		  <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20150801131203/http://www.cs.amherst.edu:80/alglab/graphcolorlab/random.c" title="01 Aug 2015"><strong>2015</strong></a></td>
-		  <td class="c" id="displayYearEl" title="You are here: 21:30:04 Nov 05, 2019">2019</td>
-		  <td class="f" nowrap="nowrap">2020</td>
-		</tr>
-	      </tbody>
-	    </table>
-	  </td>
-	</tr>
-	<tr>
-	  <td class="s">
-	    	    <div id="wm-nav-captures">
-	      	      <a class="t" href="/web/20191105213004*/https://www.cs.amherst.edu/alglab/graphcolorlab/random.c" title="See a list of every capture for this URL">6 captures</a>
-	      <div class="r" title="Timespan for captures of this URL">27 Mar 2015 - 05 Nov 2019</div>
-	      </div>
-	  </td>
-	  <td class="k">
-	    <a href="" id="wm-graph-anchor">
-	      <div id="wm-ipp-sparkline" title="Explore captures for this URL" style="position: relative">
-		<canvas id="wm-sparkline-canvas" width="650" height="27" border="0"></canvas>
-	      </div>
-	    </a>
-	  </td>
-	</tr>
-      </tbody>
-    </table>
-    <div style="position:absolute;bottom:0;right:2px;text-align:right;">
-      <a id="wm-expand" class="wm-btn wm-closed" href="#expand" onclick="__wm.ex(event);return false;"><span id="wm-expand-icon" class="iconochive-down-solid"></span> <span style="font-size:80%">About this capture</span></a>
-    </div>
-  </div>
-    <div id="wm-capinfo" style="border-top:1px solid #777;display:none; overflow: hidden">
-                <div id="wm-capinfo-timestamps">
-    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center" title="Timestamps for the elements of this page">TIMESTAMPS</div>
-    <div>
-      <div id="wm-capresources" style="margin:0 5px 5px 5px;max-height:250px;overflow-y:scroll !important"></div>
-      <div id="wm-capresources-loading" style="text-align:left;margin:0 20px 5px 5px;display:none"><img src="/_static/images/loading.gif" alt="loading" /></div>
-    </div>
-    </div>
-  </div></div></div></div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20191105213004/https://www.cs.amherst.edu/alglab/graphcolorlab/random.c</div>
-<div id="donato" style="position:relative;width:100%;">
-  <div id="donato-base">
-    <iframe id="donato-if" src="https://archive.org/includes/donate.php?as_page=1&amp;platform=wb&amp;referer=https%3A//web.archive.org/web/20191105213004/https%3A//www.cs.amherst.edu/alglab/graphcolorlab/random.c"
-	    scrolling="no" frameborder="0" style="width:100%; height:100%">
-    </iframe>
-  </div>
-</div><script type="text/javascript">
-__wm.bt(650,27,25,2,"web","https://www.cs.amherst.edu/alglab/graphcolorlab/random.c","20191105213004",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
-  __wm.rw(1);
-</script>
-<!-- END WAYBACK TOOLBAR INSERT --><iframe id="playback" src="https://web.archive.org/web/20191105213004if_/https://www.cs.amherst.edu/alglab/graphcolorlab/random.c" frameborder="0" style="position:absolute;top:65px;left:0;width:100%;">
-</iframe>
-<script type="text/javascript">
-var margin_top = 65;
-function fitPlayback() {
-  $('#playback').css({
-    height: (window.innerHeight - margin_top) + 'px',
-    top: margin_top
-  });
+
+/*--------------------------------------------------------------*/ 
+void colorit (int thenode, int thecolor) 
+{
+  colorof[thenode] = thecolor;
+  colorcounts[thecolor]++; 
+}   
+
+/*--------------------------------------------------------------*/ 
+int colorgraph()
+{
+  int v ;
+  int k; 
+
+  for (k = 1; k <= numnodes; k++) colorcounts[k] = 0; /* color distribuion*/ 
+
+  for (v = 1; v <= numnodes; v++) {
+    for (k = 1; k <= numnodes; k++ ) {
+      colorcount++;  /* number of colors examined*/  
+
+      if (checkcolorok(v, k)) {
+	colorit(v, k);
+        if (k > maxcolor) maxcolor=k;  /* overall  */ 
+	break;
+    }
+    }//for k
+  }//for v
 }
-fitPlayback();
-$(window).on('resize', function() {
-  fitPlayback(); 
-});
-$('#wm-tb-close').click(function(){
-  margin_top = 0;
-  fitPlayback();
-});
-</script>
-</body>
-</html>
+/*-----------------------------------------------------------*/
+void printcolors() 
+{
+  int v; 
+  for (v =1; v<= numnodes; v++) {
+    printf("%d %d\t", v, bestcoloring[v]); 
+    if (v % 10 == 0) printf("\n"); 
+  }
+}
+
+/*-----------------------------------------------------------*/ 
+void printgraph() 
+{
+  int src;
+  int ex; 
+  int i; 
+ 
+  for (src = 1; src <= numnodes; src++) {
+    ex = edgex[src];
+    printf("\n v %d: ", src); 
+    for (i=1; i <= ecount[src]; i++) {
+      printf("%d \t", neighbor[ex++]);
+    }
+  }
+  printf("\n"); 
+}
+
+/*-----------------------------------------------------------*/
+void randomcolor() {
+
+  int it, i, k,v, r, x; 
+  int bestcolor=numnodes+1; 
+  int tmp; 
+  int pv; 
+
+  int perm[numnodes+1]; /*initialize node permutation*/ 
+  for (i = 1; i <= numnodes;i++) perm[i] = i; 
+
+  for (it = 0; it < iterations; it++)   { 
+    /* random permutation */ 
+
+    for (i = numnodes; i >=2; i--) {
+      r =  (int) (drand48() * i )+1;
+      
+      //printf("\n swap  %d  %d \n", i, r); 
+
+      tmp= perm[i];
+      perm[i] = perm[r];
+      perm[r]=tmp;
+    }
+
+#ifdef DEBUG
+    printf("\npermutation: ");
+    for (x=1; x <= numnodes; x++) printf("%d\t", perm[x]); 
+    printf("\n");
+#endif
+
+    maxcolor=0; 
+    for (i = 1; i <= numnodes; i++) colorof[i] = 0;     /* reinit coloring */ 
+    for (k = 1; k <= numnodes; k++) colorcounts[k] = 0; /* color distribution*/ 
+
+    /* color with random permutation */ 
+    for (v = 1; v <= numnodes; v++) {
+      for (k = 1; k <= numnodes; k++ ) {
+	colorcount++;                /* total number of colors examined*/  
+
+	pv = perm[v]; 
+	if (checkcolorok(pv, k)) {
+	  colorit(pv, k);
+#ifdef DEBUG
+	  printf("(%d %d)\t", pv, k);
+#endif
+	  if (k > maxcolor) maxcolor=k;  
+	  break;
+	}//if 
+      }//for k
+    }//for v
+
+#ifdef REPORTSTATS
+    printf("\n iteration %d  maxcolor %d \n", it, maxcolor); 
+    printf("vertex color pairs:\n");
+    for (x = 1; x <=numnodes; x++) printf("%d %d \t", x, colorof[x]); 
+#endif
+
+    if (bestcolor > maxcolor) {/* save best */ 
+      bestcolor=maxcolor; 
+      for (i = 1; i <=numnodes; i++) bestcoloring[i] = colorof[i]; 
+      for (i = 1; i <=numnodes; i++) colordist[i] = colorcounts[i];
+    }
+  }// for it
+}//randomcolor 
+
+/*-----------------------------------------------------------*/ 
+main(argc, argv)
+int argc;
+char *argv[];
+
+{
+
+  if ((argc != 3) && (argc != 4))  {
+    printf("usage: random filename i s  (or)\n");
+    printf("       random filename i \n"); 
+    exit(1);
+  }
+
+  //  if ((fp = fopen(*++argv, "r")) == NULL) {
+
+  if ((fp = fopen(argv[1], "r")) == NULL) {
+    printf("color: cant open file %s\n", argv[1]);
+    exit(1);
+  } 
+        
+  iterations = atoi(argv[2]);
+
+  if (argc != 4) 
+    srand48( (long) time(0) );
+  else 
+    srand48((long) atoi(argv[3])); 
+
+  getgraph(); 
+  randomcolor(); 
+      
+#ifdef REPORTCOLORS
+  printf("\nvertex color pairs:\n"); 
+  printcolors();
+#endif 
+      
+#ifdef REPORTSTATS  
+  printf("\ngraph:\n"); 
+  printgraph(); 
+  //double avecolor= ((double) colorcount) / (double)numnodes;
+  printf("n  m  it  compares maxcolor  colorcount  \n");
+  printf("%d %d  %d  %d      %d       %d          \n", 
+	 numnodes, numedges, iterations,
+	 checkcount, maxcolor, colorcount);
+  int i;
+  printf("color counts:\n"); /* of best coloring only*/ 
+  for (i=1; i <= numnodes; i++) {
+    printf("%d %d \t", i, colordist[i]);
+    if (i % 10 == 0) printf("\n");
+    if (colordist[i]==0) break;
+  }
+      
+#endif
+
+} /* end main */ 

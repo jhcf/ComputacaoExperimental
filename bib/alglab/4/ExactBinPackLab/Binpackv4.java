@@ -1,152 +1,231 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Wayback Machine</title>
-<script src="//archive.org/includes/analytics.js?v=cf34f82" type="text/javascript"></script>
-<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app43.us.archive.org';v.server_ms=171;archive_analytics.send_pageview({});});</script><script type="text/javascript" src="/_static/js/playback.bundle.js?v=xTFGO54E" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css" href="/_static/css/banner-styles.css?v=omkqRugM" />
-<link rel="stylesheet" type="text/css" href="/_static/css/iconochive.css?v=qtvMKcIJ" />
-<script src="/_static/js/jquery-1.11.1.min.js"></script>
-</head>
-<body style="overflow:hidden;">
-<!-- BEGIN WAYBACK TOOLBAR INSERT -->
-<style type="text/css">
-body {
-  margin-top:0 !important;
-  padding-top:0 !important;
-  /*min-width:800px !important;*/
-}
-</style>
-<script>__wm.rw(0);</script>
-<div id="wm-ipp-base" lang="en" style="display:none;direction:ltr;">
-<div id="wm-ipp" style="position:fixed;left:0;top:0;right:0;">
-<div id="wm-ipp-inside">
-  <div style="position:relative;">
-    <div id="wm-logo" style="float:left;width:110px;padding-top:12px;">
-      <a href="/web/" title="Wayback Machine home page"><img src="/_static/images/toolbar/wayback-toolbar-logo-200.png" srcset="/_static/images/toolbar/wayback-toolbar-logo-100.png, /_static/images/toolbar/wayback-toolbar-logo-150.png 1.5x, /_static/images/toolbar/wayback-toolbar-logo-200.png 2x" alt="Wayback Machine" style="width:100px" border="0" /></a>
-    </div>
-    <div class="r" style="float:right;">
-      <div id="wm-btns" style="text-align:right;height:25px;">
-                  <div id="wm-save-snapshot-success">success</div>
-          <div id="wm-save-snapshot-fail">fail</div>
-          <a id="wm-save-snapshot-open" href="#"
-	     title="Share via My Web Archive" >
-            <span class="iconochive-web"></span>
-          </a>
-          <a href="https://archive.org/account/login.php"
-             title="Sign In"
-             id="wm-sign-in"
-          >
-            <span class="iconochive-person"></span>
-          </a>
-          <span id="wm-save-snapshot-in-progress" class="iconochive-web"></span>
-        	<a href="http://faq.web.archive.org/" title="Get some help using the Wayback Machine" style="top:-6px;"><span class="iconochive-question" style="color:rgb(87,186,244);font-size:160%;"></span></a>
-	<a id="wm-tb-close" href="#close" onclick="__wm.h(event);return false;" style="top:-2px;" title="Close the toolbar"><span class="iconochive-remove-circle" style="color:#888888;font-size:240%;"></span></a>
-      </div>
-      <div id="wm-share">
-          <a href="/web/20191105213017/http://web.archive.org/screenshot/https://www.cs.amherst.edu/alglab/exactbinpacklab/Binpackv4.java"
-             id="wm-screenshot"
-             title="screenshot">
-            <span class="wm-icon-screen-shot"></span>
-          </a>
-          <a href="#"
-            id="wm-video"
-            title="video">
-            <span class="iconochive-movies"></span>
-          </a>
-	<a id="wm-share-facebook" href="#" data-url="https://web.archive.org/web/20191105213017/https://www.cs.amherst.edu/alglab/exactbinpacklab/Binpackv4.java" title="Share on Facebook" style="margin-right:5px;" target="_blank"><span class="iconochive-facebook" style="color:#3b5998;font-size:160%;"></span></a>
-	<a id="wm-share-twitter" href="#" data-url="https://web.archive.org/web/20191105213017/https://www.cs.amherst.edu/alglab/exactbinpacklab/Binpackv4.java" title="Share on Twitter" style="margin-right:5px;" target="_blank"><span class="iconochive-twitter" style="color:#1dcaff;font-size:160%;"></span></a>
-      </div>
-    </div>
-    <table class="c" style="">
-      <tbody>
-	<tr>
-	  <td class="u" colspan="2">
-	    <form target="_top" method="get" action="/web/submit" name="wmtb" id="wmtb"><input type="text" name="url" id="wmtbURL" value="https://www.cs.amherst.edu/alglab/exactbinpacklab/Binpackv4.java" onfocus="this.focus();this.select();" /><input type="hidden" name="type" value="replay" /><input type="hidden" name="date" value="20191105213017" /><input type="submit" value="Go" /></form>
-	  </td>
-	  <td class="n" rowspan="2" style="width:110px;">
-	    <table>
-	      <tbody>
-		<!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
-		<tr class="m">
-		  <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20150822220201/http://www.cs.amherst.edu:80/alglab/exactbinpacklab/Binpackv4.java" title="22 Aug 2015"><strong>Aug</strong></a></td>
-		  <td class="c" id="displayMonthEl" title="You are here: 21:30:17 Nov 05, 2019">NOV</td>
-		  <td class="f" nowrap="nowrap">Dec</td>
-		</tr>
-		<!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
-		<tr class="d">
-		  <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20150822220201/http://www.cs.amherst.edu:80/alglab/exactbinpacklab/Binpackv4.java" title="22:02:01 Aug 22, 2015"><img src="/_static/images/toolbar/wm_tb_prv_on.png" alt="Previous capture" width="14" height="16" border="0" /></a></td>
-		  <td class="c" id="displayDayEl" style="width:34px;font-size:24px;white-space:nowrap;" title="You are here: 21:30:17 Nov 05, 2019">05</td>
-		  <td class="f" nowrap="nowrap"><img src="/_static/images/toolbar/wm_tb_nxt_off.png" alt="Next capture" width="14" height="16" border="0" /></td>
-		</tr>
-		<!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
-		<tr class="y">
-		  <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20150822220201/http://www.cs.amherst.edu:80/alglab/exactbinpacklab/Binpackv4.java" title="22 Aug 2015"><strong>2015</strong></a></td>
-		  <td class="c" id="displayYearEl" title="You are here: 21:30:17 Nov 05, 2019">2019</td>
-		  <td class="f" nowrap="nowrap">2020</td>
-		</tr>
-	      </tbody>
-	    </table>
-	  </td>
-	</tr>
-	<tr>
-	  <td class="s">
-	    	    <div id="wm-nav-captures">
-	      	      <a class="t" href="/web/20191105213017*/https://www.cs.amherst.edu/alglab/exactbinpacklab/Binpackv4.java" title="See a list of every capture for this URL">5 captures</a>
-	      <div class="r" title="Timespan for captures of this URL">23 May 2014 - 05 Nov 2019</div>
-	      </div>
-	  </td>
-	  <td class="k">
-	    <a href="" id="wm-graph-anchor">
-	      <div id="wm-ipp-sparkline" title="Explore captures for this URL" style="position: relative">
-		<canvas id="wm-sparkline-canvas" width="650" height="27" border="0"></canvas>
-	      </div>
-	    </a>
-	  </td>
-	</tr>
-      </tbody>
-    </table>
-    <div style="position:absolute;bottom:0;right:2px;text-align:right;">
-      <a id="wm-expand" class="wm-btn wm-closed" href="#expand" onclick="__wm.ex(event);return false;"><span id="wm-expand-icon" class="iconochive-down-solid"></span> <span style="font-size:80%">About this capture</span></a>
-    </div>
-  </div>
-    <div id="wm-capinfo" style="border-top:1px solid #777;display:none; overflow: hidden">
-                <div id="wm-capinfo-timestamps">
-    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center" title="Timestamps for the elements of this page">TIMESTAMPS</div>
-    <div>
-      <div id="wm-capresources" style="margin:0 5px 5px 5px;max-height:250px;overflow-y:scroll !important"></div>
-      <div id="wm-capresources-loading" style="text-align:left;margin:0 20px 5px 5px;display:none"><img src="/_static/images/loading.gif" alt="loading" /></div>
-    </div>
-    </div>
-  </div></div></div></div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20191105213017/https://www.cs.amherst.edu/alglab/exactbinpacklab/Binpackv4.java</div>
-<div id="donato" style="position:relative;width:100%;">
-  <div id="donato-base">
-    <iframe id="donato-if" src="https://archive.org/includes/donate.php?as_page=1&amp;platform=wb&amp;referer=https%3A//web.archive.org/web/20191105213017/https%3A//www.cs.amherst.edu/alglab/exactbinpacklab/Binpackv4.java"
-	    scrolling="no" frameborder="0" style="width:100%; height:100%">
-    </iframe>
-  </div>
-</div><script type="text/javascript">
-__wm.bt(650,27,25,2,"web","https://www.cs.amherst.edu/alglab/exactbinpacklab/Binpackv4.java","20191105213017",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
-  __wm.rw(1);
-</script>
-<!-- END WAYBACK TOOLBAR INSERT --><iframe id="playback" src="https://web.archive.org/web/20191105213017if_/https://www.cs.amherst.edu/alglab/exactbinpacklab/Binpackv4.java" frameborder="0" style="position:absolute;top:65px;left:0;width:100%;">
-</iframe>
-<script type="text/javascript">
-var margin_top = 65;
-function fitPlayback() {
-  $('#playback').css({
-    height: (window.innerHeight - margin_top) + 'px',
-    top: margin_top
-  });
-}
-fitPlayback();
-$(window).on('resize', function() {
-  fitPlayback(); 
-});
-$('#wm-tb-close').click(function(){
-  margin_top = 0;
-  fitPlayback();
-});
-</script>
-</body>
-</html>
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Random;
+
+// written by ccm 8/2010
+// a demo program that generates a random list and
+// solves bin packing by branch and bound
+// using incremental cost functions 
+// Version 4 used branch-bound, propogation, and preprocessing with FFD 
+
+// Usage:  java Binpackv4  n u [seed] 
+// n is number of item to be packed
+// u is upper bound (<= 1.0) on items
+// seed is random seed 
+
+class Binpackv4 {
+
+    static final int TLIM=3; //print first tlim tests to validate 
+
+    static double tests= 0; // report number of packings evaluated
+    static double recurs=0; // report number of recursive stages 
+
+    static int n; 
+    static double u;
+    static double[] list; //of items 
+    static double[] optlist; // optimal order 
+
+    static long seed;  
+    static Random rng;  
+	
+    static int optcost = Integer.MAX_VALUE; 
+
+    //----------swap--------------------------
+    static void swap (int a, int b){
+	double x = list[a];
+
+        list[a] = list[b];
+        list[b] = x;
+    }
+
+    //---------packBins------------------------------------
+    // note list is global 
+    // k = index of weight list 
+    // sumwts = cumulated sum of weights already packed 
+    // bcount = cumulated sum of bins used so far 
+    // capacity = how much left in the bin 
+
+    //	binPack(0, sumwts, bins, capacity ); // pack item 0 
+
+    static void packBins(int k, double sumwt, int bcount, double capacity) { 
+        double s; 
+	int b; 
+	double c;
+
+	recurs++;  
+
+	if (k >= n) {  // no more weights; check against optimal 
+	    tests++;
+	    
+	    /*--------------------------
+	      System.out.println("opt check this:"); 
+		for (int i=0; i < n; i++)
+	      
+		System.out.print( list [i] + "\t");
+		System.out.println(); 
+		System.out.println(" k "      + k + "\t" + 
+				   "list[k-1] " + list[k-1] + "\t" +
+				   "sumwt "    + sumwt + "\t" + 
+				   "count "    + bcount + "\t" +
+				   "cap   "    + capacity );
+				   ----------------*/ 
+
+	    if (bcount < optcost) { 
+		//		System.out.println("new opt: " + bcount); 
+
+		optcost = bcount;  
+		for (int i=0; i < n; i++) optlist[i] = list[i]; 
+		
+	    }
+	} // recursion stopper 
+	    
+	else {
+
+	    for (int i=k; i < n; i++) {
+		swap (k, i);              //  try it 
+
+		//System.out.println("Try " + k + " " + list[k]) ; 
+	 
+
+		if (capacity <  list[k]) { // doesn't fit 
+		    b= bcount+1;                 // open new bin 
+		    c= 1.0 - list[k];          // new capacity 
+		}
+                else{
+                    b = bcount;                //same bin count 
+		    c = capacity - list[k];  //use old bin 
+
+		}
+
+		s = sumwt-list[k];       //  update sumweights 
+		// if (b + (s - 1)) >= optcost don't recur
+
+		if ((b + Math.ceil(s - c)) < optcost) {     // check 
+		    packBins(k+1, s, b, c);     // recur
+		}
+	    
+		swap(k, i);                     // restore it
+
+	    }//for
+	}//else
+    }//binPack
+
+    //----------ffd---------------------------
+    static int ffd(double sumwt) {
+	// sort optlist, then pack with ffd (n^2) 
+	// the weights are in list
+	// insertion sort ok since n <= 14
+	// return number of bins 
+
+
+	for (int i = 1; i < n; i++){
+	    //inv: list[0..i-1] is sorted
+	    // insert list[i] in place 
+	    double p = optlist[i]; 
+            int j; 
+	    for (j = i-1; j>=0; j--) {
+		// inv: hole is at j+1
+
+		if (optlist[j] <= p) break; 
+		else 
+		    optlist[j+1] = optlist[j];
+	    }
+	    optlist[j+1] = p; 
+	}//for 
+
+	/*
+	System.out.println("Check Sort"); 
+	for (int i = 0; i < n; i++) 
+	    System.out.print( optlist[i] + "\t"); 
+	System.out.println();
+	*/
+
+	int bsize = (int) (sumwt*2) + 1; 
+	double bins[] = new double[bsize];
+	for (int i = 0; i < bsize; i++) bins[i] = 0.0; 
+
+	int lastbin = 0; //open this one 
+	
+	for (int wix  = 0; wix < n; wix++){ 
+	    double wt = optlist[wix]; 
+	    // inv: lastbin is last bin open 
+
+            int bix; 
+	    for (bix = 0; bix <= lastbin; bix++) {
+		if (wt + bins[bix] <= 1.0) {
+		    bins[bix] += wt; 
+		    break;
+		}
+	    }//for 
+	    if (bix > lastbin) {
+		lastbin++;
+		bins[lastbin] += wt; 
+	    } 
+
+	}// for each weight 
+
+	return lastbin+1;  
+
+    }// ffd 
+	
+    //-----------------main-----------------
+    public static void main(String[] args) {
+	double sumwts = 0.0;
+        int    bins = 1;
+        double capacity = 1.0;
+      
+	if (args.length < 2) { 
+	    System.out.println("Usage:  java Binpack n u seed");
+
+            System.exit(0);
+	}
+	else {
+	    n = Integer.valueOf(args[0].trim()).intValue();
+	    u = Double.valueOf(args[1].trim()).doubleValue();
+
+	    seed = 876654391; 
+	    if (args.length == 3) 
+		seed = Integer.valueOf(args[2].trim()).intValue(); 
+
+	    if (( u <0.0 || u > 1.0)){
+		System.out.println("u must be between 0 and 1. Stop.");
+		System.exit(0);  
+	    }
+	}
+
+	list = new double[n];
+	optlist= new double[n]; 
+
+	rng = new Random(seed);  
+
+	for (int i = 0; i < n; i++) {
+	    // list[i] = Math.random()*u; 
+	    list[i] = rng.nextDouble()* u; 
+	    sumwts += list[i];
+
+	    optlist[i] = list[i]; // use it for ffd sort 
+
+	    //	    System.out.print( list[i] + " \t"); 
+	} 
+	//	System.out.println(" sum to: " + sumwts); 
+
+	//---------------ffd packing-----------
+	optcost = ffd(sumwts) ; 
+
+	packBins (0, sumwts, bins, capacity ); // pack item 0 
+
+	// System.out.println( "c   n sumweights bins recurs numtested"); 
+	System.out.println(n + " " + 
+			   sumwts + " " + 
+			   optcost + " " +
+			   recurs + " " + 
+			   tests);
+
+	//	int b = bins; 
+	//if (b > 10) b=10; 
+       	//for (int i = 0; i < b; i++)System.out.print(list[i] + "\t");
+	//System.out.println(); 
+
+    }//main
+}//class
